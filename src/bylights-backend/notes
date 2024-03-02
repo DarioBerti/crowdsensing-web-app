@@ -1,0 +1,10 @@
+PHP
+    header('Access-Control-Allow-Origin: http://localhost:8080');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept');
+    Questo dice al browser che è ok accettare richieste dal frontend che è servito dalla porta 8080.
+    Ricorda che questa è una configurazione per lo sviluppo
+
+JAVASCRIPT
+    import axios from 'axios';
+
