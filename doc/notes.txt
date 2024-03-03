@@ -1,3 +1,10 @@
+PROGETTO
+    creato con npm, node.js e build tool Vue-CL (attraverso riga di comando)
+        utile, ha creato molti file
+
+
+-------------------------------------------------------------------------------------------------------------------
+
 PHP
     header('Access-Control-Allow-Origin: http://localhost:8080');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -8,3 +15,5 @@ PHP
 JAVASCRIPT
     import axios from 'axios';
 
+teleport component for modals
+suspence component for asynchronous components
