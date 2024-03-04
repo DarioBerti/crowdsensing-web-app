@@ -1,6 +1,8 @@
 PROGETTO
     creato con npm, node.js e build tool Vue-CL (attraverso riga di comando)
         utile, ha creato molti file
+    uso vue3
+    aggiungo estensione "Vetur"
 
 
 -------------------------------------------------------------------------------------------------------------------
