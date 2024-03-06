@@ -1,9 +1,12 @@
 PROGETTO
-    creato con npm, node.js e build tool Vue-CL (attraverso riga di comando)
+    creato con npm, node.js e build tool Vue-CLI (attraverso riga di comando)
         utile, ha creato molti file
-    uso vue3
+    uso vue3, Vue CLI 5.0.8
     aggiungo estensione "Vetur"
+    (CLI Plugins are npm packages that provide optional features to your Vue CLI projects, such as Babel/TypeScript transpilation, ESLint integration, unit testing, and end-to-end testing. It's easy to spot a Vue CLI plugin as their names start with either @vue/cli-plugin- (for built-in plugins) or vue-cli-plugin- (for community plugins).)
+    (When you run the vue-cli-service binary inside your project, it automatically resolves and loads all CLI Plugins listed in your project's package.json.)
 
+    You can install and manage Plugins using the GUI with the VUE UI COMMAND
 
 -------------------------------------------------------------------------------------------------------------------
 
