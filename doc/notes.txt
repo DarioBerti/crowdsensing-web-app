@@ -16,8 +16,22 @@ suspence component for asynchronous components
 
 folder "public" for files i don't want to go through webpack
 Vue.js root in cui tutti il resto è innestato
-main.js renders app and sends it to DOM
+main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)
+        <template>
+        <div>
+            <!-- Il tuo HTML per la singola pagina va qui -->
+        </div>
+        </template>
 
+        <script>
+        export default {
+        // Logica Vue se necessaria
+        }
+        </script>
+
+        <style>
+        /* Stili CSS locali */
+        </style>
 
 
 
