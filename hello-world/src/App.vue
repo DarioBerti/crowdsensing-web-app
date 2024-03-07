@@ -1,3 +1,6 @@
+<!--general functions-->
+
+<!--template that will be rendered inside the page-->
 <template>
   <div>
     <nav>
@@ -8,6 +11,7 @@
   </div>
 </template>
 
+<!--style that will be rendered inside the page-->
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
