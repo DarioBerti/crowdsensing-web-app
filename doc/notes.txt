@@ -22,7 +22,7 @@ suspence component for asynchronous components
 
 folder "public" for files i don't want to go through webpack. HARD-CODING
 main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)
-Vue.js root in cui tutti il resto è innestato. chiama i .vue principali
+Vue.js root in cui tutti il resto è innestato. chiama i .vue principali. PARENT FILE
 App.vue
         <template>
         <div>
