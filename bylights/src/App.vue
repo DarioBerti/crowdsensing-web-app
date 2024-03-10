@@ -16,28 +16,32 @@
       </li>
     </ul>
   </div-->
+  <modalComponent />
 </template>
 
 <script>
-export default {
-  name: 'App',
-  data() {
-    return {
-      message: 'My first vue web-app'
-    };
-  },
-  methods: {
-    changeMessage() {
-      this.message = 'bye bye'
+  import modalComponent from './components/modalComponent.vue';
+
+  export default {
+    name: 'App',
+    components: modalComponent,
+    data() {
+      return {
+        message: 'My first vue web-app'
+      };
     },
-    handleClickButton(){
-      this.$refs.inputText.classList.add('active') //aggiunge classe active a tale ref specifica
+    methods: {
+      changeMessage() {
+        this.message = 'bye bye'
+      },
+      handleClickButton(){
+        this.$refs.inputText.classList.add('active') //aggiunge classe active a tale ref specifica
+      }
+    },
+    computed: {
+      //per liste che cambiano sempre in base a cosa viene cliccato(es lista dei preferiti)
     }
-  },
-  computed: {
-    //per liste che cambiano sempre in base a cosa viene cliccato(es lista dei preferiti)
-  }
-};
+  };
 </script>
 
 <style>
