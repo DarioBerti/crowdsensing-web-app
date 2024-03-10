@@ -25,9 +25,6 @@ export default {
   methods: {
     changeMessage() {
       this.message = 'bye bye'
-    },
-    handleMouseOver(e){
-      console.log(e, e.type);
     }
   },
   computed: {
