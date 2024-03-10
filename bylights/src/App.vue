@@ -1,9 +1,13 @@
 <template>
   <div>
     <h1>{{ message }}</h1>
+    <input type="text" ref="inputText">
+    <button @click="handleClickButton">button</button>
+  </div>
+  <!--div>
     <button @click="changeMessage">Cliccami</button>
   </div>
-  <!--div v-if="true"></div> se evento non cambia spesso
+  <div v-if="true"></div> se evento non cambia spesso
   <div v-show="true"></div> se evento cambia spesso
   <div class="box" @mouseover="handleMouseOver">box</div> mouse events
   <div>
@@ -19,12 +23,15 @@ export default {
   name: 'App',
   data() {
     return {
-      message: 'Ciao Mondo!'
+      message: 'My first vue web-app'
     };
   },
   methods: {
     changeMessage() {
       this.message = 'bye bye'
+    },
+    handleClickButton(){
+      this.$refs.inputText.classList.add('active') //aggiunge classe active a tale ref specifica
     }
   },
   computed: {
