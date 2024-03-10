@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <baseComponent msg="Welcome to Your Vue.js App"/>
+  <mainComponent msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
-  import baseComponent from './components/baseComponent.vue'
+  import mainComponent from './components/mainComponent.vue'
 
   export default {
     name: 'App',
     components: {
-      baseComponent
+      mainComponent
     }
   }
 </script>
