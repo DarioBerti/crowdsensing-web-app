@@ -16,15 +16,15 @@
       </li>
     </ul>
   </div-->
-  <modalComponent />
+  <ModalComponent />
 </template>
 
 <script>
-  import modalComponent from './components/modalComponent.vue';
+  import ModalComponent from './components/ModalComponent.vue'
 
   export default {
     name: 'App',
-    components: {modalComponent},
+    components: {ModalComponent},
     data() {
       return {
         message: 'My first vue web-app'
