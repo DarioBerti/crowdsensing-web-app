@@ -24,7 +24,7 @@
 
   export default {
     name: 'App',
-    components: modalComponent,
+    components: {modalComponent},
     data() {
       return {
         message: 'My first vue web-app'
