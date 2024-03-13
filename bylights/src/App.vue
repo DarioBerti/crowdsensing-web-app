@@ -4,19 +4,11 @@
     <input type="text" ref="inputText">
     <button @click="handleClickButton">button</button>
   </div>
-  <!--div>
-    <button @click="changeMessage">Cliccami</button>
+  <div v-if="showModal">
+    <!--@close è emit del componente-->
+    <ModalComponent :header="header" :theme="theme" :showModal="showModal" @close="toggleModal"/>
   </div>
-  <div v-if="true"></div> se evento non cambia spesso
-  <div v-show="true"></div> se evento cambia spesso
-  <div class="box" @mouseover="handleMouseOver">box</div> mouse events
-  <div>
-    <ul>  data un array, c'è metodo .filter()
-      <li v-for="book in books" :class="{ fav: book.isFav}">  ciclare una lista books ed aggiungere una classe 'fav' ad ogni classe book che ha metodo isFav==true
-      </li>
-    </ul>
-  </div-->
-  <ModalComponent />
+  <button @click="toggleModal">open modal</button>
 </template>
 
 <script>
@@ -27,7 +19,10 @@
     components: {ModalComponent},
     data() {
       return {
-        message: 'My first vue web-app'
+        message: 'My first vue web-app',
+        header: 'sign up with account',
+        theme: 'sale',
+        showModal: false
       };
     },
     methods: {
@@ -36,6 +31,9 @@
       },
       handleClickButton(){
         this.$refs.inputText.classList.add('active') //aggiunge classe active a tale ref specifica
+      },
+      toggleModal(){
+        this.showModal = !this.showModal
       }
     },
     computed: {
@@ -45,10 +43,10 @@
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>
