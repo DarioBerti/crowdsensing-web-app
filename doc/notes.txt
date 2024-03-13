@@ -19,6 +19,9 @@ PROGETTO
         - per data-binding di classi per assegnare in modo dinamico stili specifici a classi in base al prop
         - per mostrare classi quando serve
     uso emit per comunicazione figlio-genitore. al contrario passo con props
+    
+    uso composition API invece che options API dato che utilizzo Vue3
+
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
