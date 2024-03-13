@@ -14,7 +14,10 @@ PROGETTO
 
 
     uso vue per rendere il sito più dinamico. ovvero non faccio hard-coding direttamente nell'html
-
+    zero hard-coding su file index.html
+    uso i props per evitare hard-coding nei componenti
+        - per data-binding di classi per assegnare in modo dinamico stili specifici a classi in base al prop
+        - per mostrare classi quando serve
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
