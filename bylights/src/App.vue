@@ -5,7 +5,7 @@
     <button @click="handleClickButton">button</button>
   </div>
   <div v-if="showModal">
-    <!--@close è emit del componente-->
+    <!--@close è emit del componente. genitore invia dati, figlio risponde ad eventi attraverso emit, senza modificare-->
     <ModalComponent :header="header" :theme="theme" :showModal="showModal" @close="toggleModal"/>
   </div>
   <button @click="toggleModal">open modal</button>

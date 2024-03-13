@@ -18,6 +18,7 @@ PROGETTO
     uso i props per evitare hard-coding nei componenti
         - per data-binding di classi per assegnare in modo dinamico stili specifici a classi in base al prop
         - per mostrare classi quando serve
+    uso emit per comunicazione figlio-genitore. al contrario passo con props
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
