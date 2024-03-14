@@ -1,10 +1,10 @@
 <template>
     <div>
-        <section>
-            <h1>REGISTER</h1>
-        </section>
-        <section>
-            <form>
+        <form @submit.prevent="handleSubmit">
+            <section>
+                <h1>REGISTER</h1>
+            </section>
+            <section>
                 <label>Nome:</label>
                 <input type="text" required v-model="name">
                 <label>Cognome:</label>
@@ -13,10 +13,16 @@
                 <input type="email" required v-model="email">
                 <label>Password</label>
                 <input type="password" required v-model="password">
+                <div v-if="this.passwordError" class="error">
+                    {{ passwordError }}
+                </div>
                 <p>Already have an account?</p>
                 <p class="SignupLink">Signup</p>
-            </form>
-        </section>
+            </section>
+            <div class="submit">
+                <button>Register</button>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -29,16 +35,20 @@ export default{
             email: '',
             password: '',
             name: '',
-            surname: ''
+            surname: '',
+            passwordError: ''
         }
     },
     methods: {
+        handleSubmit(){
+            this.passwordError =  this.password.length < 6 ? 'the password must be at least 6 chars long!' : ''  
+        }
     }
 }
 </script>
 
 <style scoped>
-    div {
+    form {
     max-width: 420px;
     margin: 30px auto;
     background:white;
@@ -74,5 +84,22 @@ export default{
     .SignupLink{
         color: red;
         margin-left: 3%;
+    }
+    .submit {
+        text-align: center;
+    }
+    button {
+        background: #0b6dff;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: white;
+        border-radius: 20px;
+    }
+    .error {
+        color: #ff0062;
+        margin-top: 10px;
+        font-size: 0.8em;
+        font-weight: bold;
     }
 </style>

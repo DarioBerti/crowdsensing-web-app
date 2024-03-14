@@ -1,20 +1,26 @@
 <template>
     <div>
-        <section>
-            <h1>SIGNUP</h1>
-        </section>
-        <section>
-            <form>
+        <!--calls function 'handleSubmit' and does not reload the page-->
+        <form @submit.prevent="handleSubmit">
+            <section>
+                <h1>SIGN UP</h1>
+            </section>
+            <section>
                 <label>Email:</label>
                 <!--v-model tracks user input real-time-->
                 <input type="email" required v-model="email">
                 <label>Password</label>
                 <input type="password" required v-model="password">
+                <div v-if="this.passwordError" class="error">
+                    {{ passwordError }}
+                </div>
                 <p>Don't have an account?</p>
                 <p class="RegisterLink">Register</p>
-            </form>
-        </section>
-        
+            </section>
+            <div class="submit">
+                <button>Sign up</button>
+            </div>
+        </form>
     </div>
 </template>
 
@@ -25,16 +31,20 @@ export default{
     data() {
         return{
             email: '',
-            password: ''
+            password: '',
+            passwordError: ''
         }
     },
     methods: {
+        handleSubmit(){
+            this.passwordError =  this.password.length < 6 ? 'the password must be at least 6 chars long!' : ''  
+        }
     }
 }
 </script>
 
 <style scoped>
-    div {
+    form {
     max-width: 420px;
     margin: 30px auto;
     background:white;
@@ -66,5 +76,22 @@ export default{
     }
     h1{
         color: #555;
+    }
+    button {
+        background: #0b6dff;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: white;
+        border-radius: 20px;
+    }
+    .submit {
+        text-align: center;
+    }
+    .error {
+        color: #ff0062;
+        margin-top: 10px;
+        font-size: 0.8em;
+        font-weight: bold;
     }
 </style>
