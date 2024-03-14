@@ -6,8 +6,9 @@
             <input type="email" required v-model="email">
             <label>Password</label>
             <input type="password" required v-model="password">
+            <p>Don't have an account?</p>
+            <p class="registerLink">Register</p>
         </form>
-        <p>{{ email }} - {{ password }}</p>
     </div>
 </template>
 
@@ -22,7 +23,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
     form {
     max-width: 420px;
     margin: 30px auto;
@@ -31,7 +32,7 @@ export default{
     padding: 40px;
     border-radius: 10px;
     }
-    label{
+    label, p{
         color: #aaa;
         display: inline-block;
         margin: 25px 0 15px;
@@ -48,5 +49,9 @@ export default{
         border: none;
         border-bottom: 1px solid #ddd;
         color: #555;
+    }
+    .registerLink{
+        color: red;
+        margin-left: 3%;
     }
 </style>
