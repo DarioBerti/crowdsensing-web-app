@@ -2,14 +2,23 @@
     <div>
         <form>
             <label>Email:</label>
-            <input type="email" required>
+            <!--v-model tracks user input real-time-->
+            <input type="email" required v-model="email">
+            <label>Password</label>
+            <input type="password" required v-model="password">
         </form>
+        <p>{{ email }} - {{ password }}</p>
     </div>
 </template>
 
 <script>
 export default{
-    Name: 'App',
+    data(){
+        return{
+            email: '',
+            password: ''
+        }
+    }
 }
 </script>
 
