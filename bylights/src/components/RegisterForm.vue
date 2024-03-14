@@ -1,17 +1,22 @@
 <template>
     <div>
-        <form>
-            <label>Nome:</label>
-            <input type="text" required v-model="name">
-            <label>Cognome:</label>
-            <input type="text" required v-model="surname">
-            <label>Email:</label>
-            <input type="email" required v-model="email">
-            <label>Password</label>
-            <input type="password" required v-model="password">
-            <p>Already have an account?</p>
-            <p class="SignupLink">Signup</p>
-        </form>
+        <section>
+            <h1>REGISTER</h1>
+        </section>
+        <section>
+            <form>
+                <label>Nome:</label>
+                <input type="text" required v-model="name">
+                <label>Cognome:</label>
+                <input type="text" required v-model="surname">
+                <label>Email:</label>
+                <input type="email" required v-model="email">
+                <label>Password</label>
+                <input type="password" required v-model="password">
+                <p>Already have an account?</p>
+                <p class="SignupLink">Signup</p>
+            </form>
+        </section>
     </div>
 </template>
 
@@ -33,7 +38,7 @@ export default{
 </script>
 
 <style scoped>
-    form {
+    div {
     max-width: 420px;
     margin: 30px auto;
     background:white;
@@ -57,6 +62,9 @@ export default{
         box-sizing: border-box;
         border: none;
         border-bottom: 1px solid #ddd;
+        color: #555;
+    }
+    h1{
         color: #555;
     }
     .registerLink{

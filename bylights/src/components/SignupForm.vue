@@ -1,14 +1,20 @@
 <template>
     <div>
-        <form>
-            <label>Email:</label>
-            <!--v-model tracks user input real-time-->
-            <input type="email" required v-model="email">
-            <label>Password</label>
-            <input type="password" required v-model="password">
-            <p>Don't have an account?</p>
-            <p class="RegisterLink">Register</p>
-        </form>
+        <section>
+            <h1>SIGNUP</h1>
+        </section>
+        <section>
+            <form>
+                <label>Email:</label>
+                <!--v-model tracks user input real-time-->
+                <input type="email" required v-model="email">
+                <label>Password</label>
+                <input type="password" required v-model="password">
+                <p>Don't have an account?</p>
+                <p class="RegisterLink">Register</p>
+            </form>
+        </section>
+        
     </div>
 </template>
 
@@ -28,7 +34,7 @@ export default{
 </script>
 
 <style scoped>
-    form {
+    div {
     max-width: 420px;
     margin: 30px auto;
     background:white;
@@ -57,5 +63,8 @@ export default{
     .RegisterLink{
         color: red;
         margin-left: 3%;
+    }
+    h1{
+        color: #555;
     }
 </style>
