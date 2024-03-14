@@ -1,13 +1,16 @@
 <template>
     <div>
         <form>
+            <label>Nome:</label>
+            <input type="text" required v-model="name">
+            <label>Cognome:</label>
+            <input type="text" required v-model="surname">
             <label>Email:</label>
-            <!--v-model tracks user input real-time-->
             <input type="email" required v-model="email">
             <label>Password</label>
             <input type="password" required v-model="password">
-            <p>Don't have an account?</p>
-            <p class="RegisterLink">Register</p>
+            <p>Already have an account?</p>
+            <p class="SignupLink">Signup</p>
         </form>
     </div>
 </template>
@@ -19,7 +22,9 @@ export default{
     data() {
         return{
             email: '',
-            password: ''
+            password: '',
+            name: '',
+            surname: ''
         }
     },
     methods: {
@@ -54,7 +59,11 @@ export default{
         border-bottom: 1px solid #ddd;
         color: #555;
     }
-    .RegisterLink{
+    .registerLink{
+        color: red;
+        margin-left: 3%;
+    }
+    .SignupLink{
         color: red;
         margin-left: 3%;
     }
