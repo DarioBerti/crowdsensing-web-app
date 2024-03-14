@@ -19,6 +19,8 @@ PROGETTO
         - per data-binding di classi per assegnare in modo dinamico stili specifici a classi in base al prop
         - per mostrare classi quando serve
     uso emit per comunicazione figlio-genitore. al contrario passo con props
+
+    nel fare i login e submit, voglio passare da pagina a pagina -> uso ed installo vue-router 
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
