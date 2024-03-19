@@ -24,6 +24,8 @@ PROGETTO
         noto che non uso delle server request se ispeziono pagina -> guardo su "Network"
     [metto cose specifiche della pagina in 'views', parti che riuso sempre in 'components']
 
+    installo json-server per gestire i file json del database
+
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
@@ -32,6 +34,8 @@ suspence component for asynchronous components
 folder "public" for files i don't want to go through webpack. HARD-CODING
 main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)
 Vue.js root in cui tutti il resto è innestato. chiama i .vue principali. PARENT FILE
+uso "npm run serve"
+uso "npx json-server --watch data/db.json"
 
 
 PHP

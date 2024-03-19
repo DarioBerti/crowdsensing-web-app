@@ -2,6 +2,9 @@
     <div>
         <form @submit.prevent="handleSubmit">
             <p @click="back" style="color:blue">--- Go back</p>
+            <div>
+                <router-link to="/badges"><p class="RoutingLink">Badges page</p></router-link>
+            </div>
             <h1>REGISTER</h1>
             <section>
                 <label>Nome:</label>
@@ -17,7 +20,7 @@
                 </div>
                 <div>
                     <p>Already have an account?</p>
-                    <router-link to="/"><p class="SignupLink">Sign up</p></router-link>
+                    <router-link to="/"><p class="RoutingLink">Sign up</p></router-link>
                 </div>
             </section>
             <div class="submit">
@@ -37,7 +40,8 @@ export default{
             password: '',
             name: '',
             surname: '',
-            passwordError: ''
+            passwordError: ''/*,
+            badges: []*/
         }
     },
     methods: {
@@ -47,7 +51,13 @@ export default{
         back(){
             this.$router.go(-1)
         }
-    }
+    }/*,
+    mounted(){
+        fetch('http://localhost:3000/badges')
+            .then(res => res.res.json())
+            .then(data => this.badges = data)
+            .catch(err => console.log(err.message))
+    }*/
 }
 </script>
 
@@ -81,11 +91,11 @@ export default{
     h1{
         color: #555;
     }
-    .SignupLink{
+    .RoutingLink{
         color: red;
         margin-left: 3%;
     }
-    .SignupLink:hover{
+    .RoutingLink:hover{
          text-decoration: underline;
          text-decoration-color: #ff0062;
     }

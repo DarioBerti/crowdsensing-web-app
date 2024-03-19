@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import RegisterFormView from '../views/RegisterFormView.vue'
 import SignupFormView from '../views/SignupFormView.vue'
+import Badges from '../views/badges/BadgesView.vue'
 
 const routes = [
     {
@@ -13,6 +14,11 @@ const routes = [
         name: 'RegisterFormView',
         component: RegisterFormView
     },
+    {
+        path: '/badges',
+        name: 'Badges',
+        component: Badges
+    }
 ]
 
 const router = createRouter({
