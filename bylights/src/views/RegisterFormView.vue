@@ -1,9 +1,8 @@
 <template>
     <div>
         <form @submit.prevent="handleSubmit">
-            <section>
-                <h1>REGISTER</h1>
-            </section>
+            <p @click="back" style="color:blue">--- Go back</p>
+            <h1>REGISTER</h1>
             <section>
                 <label>Nome:</label>
                 <input type="text" required v-model="name">
@@ -44,6 +43,9 @@ export default{
     methods: {
         handleSubmit(){
             this.passwordError =  this.password.length < 6 ? 'the password must be at least 6 chars long!' : ''  
+        },
+        back(){
+            this.$router.go(-1)
         }
     }
 }
