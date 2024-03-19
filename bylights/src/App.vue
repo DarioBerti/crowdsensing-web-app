@@ -1,16 +1,17 @@
 <template>
-  <SignupForm />
-  <RegisterForm />
+  <!--SignupForm />
+  <RegisterForm /-->
+  <RouterView/>
 </template>
 
 <script>
-  import SignupForm from './components/SignupForm.vue'
-  import RegisterForm from './components/RegisterForm.vue'
+  //import SignupForm from './components/SignupForm.vue'
+  //import RegisterForm from './components/RegisterForm.vue'
 
 
   export default {
     name: 'App',
-    components: { SignupForm , RegisterForm}
+    components: { /*SignupForm , RegisterForm*/}
   }
 </script>
 
