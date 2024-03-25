@@ -31,7 +31,8 @@ PROGETTO
 teleport component for modals
 suspence component for asynchronous components
 router-link normali per pagine diverse
-params dinamici, per aprire diverse pagine in base a cosa clicchi. route-param cambia ma è lo stesso file vue. CONCETTI DIVERSI MA STESSA PAGINA
+params dinamici, per aprire diverse pagine in base a cosa clicchi. route-param cambia ma è lo stesso file vue. CONCETTI DIVERSI MA STESSA PAGINA.
+    ($route.params.id)
 
 folder "public" for files i don't want to go through webpack. HARD-CODING
 main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)

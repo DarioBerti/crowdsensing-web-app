@@ -11,12 +11,14 @@
     export default{
         data(){
             return{
-                badges: [
-                    {title:"titolo di badge 1!!!", id: 1, details: "questo badge è mooolto importante"},
-                    {title:"titolo di badge 2!!!", id: 2, details: "questo badge è mooolto importante"},
-                    {title:"titolo di badge 3!!!", id: 3, details: "questo badge è mooolto importante"} 
-                ]
+                badges: []
             }
+        },
+        mounted(){
+            fetch('http://localhost:3000/badges')
+            .then(res => res.json())
+            .then(data => this.badges = data)
+            .catch(err => console.log(err.message))
         }
     }
 </script>
