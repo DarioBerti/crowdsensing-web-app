@@ -24,12 +24,14 @@ PROGETTO
         noto che non uso delle server request se ispeziono pagina -> guardo su "Network"
     [metto cose specifiche della pagina in 'views', parti che riuso sempre in 'components']
 
-    installo json-server per gestire i file json del database
+    installo json-server per gestire i file json del database-DATABASE FINTO
 
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
 suspence component for asynchronous components
+router-link normali per pagine diverse
+params dinamici, per aprire diverse pagine in base a cosa clicchi. route-param cambia ma è lo stesso file vue. CONCETTI DIVERSI MA STESSA PAGINA
 
 folder "public" for files i don't want to go through webpack. HARD-CODING
 main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)
@@ -44,3 +46,7 @@ PHP
     header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept');
     Questo dice al browser che è ok accettare richieste dal frontend che è servito dalla porta 8080.
     Ricorda che questa è una configurazione per lo sviluppo
+
+-------------------------------------------------------------------------------------------------------------------
+DOMANDE:
+-> VA BENE USARE JSON SERVER PER TUTTO IL DTABASE O LO DEVO CREARE SERIAMENTE IN ALTRO MODO?

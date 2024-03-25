@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RegisterFormView from '../views/RegisterFormView.vue'
 import SignupFormView from '../views/SignupFormView.vue'
 import Badges from '../views/badges/BadgesView.vue'
+import BadgesDetails from '../views/badges/BadgesDetailsView.vue'
 
 const routes = [
     {
@@ -18,6 +19,11 @@ const routes = [
         path: '/badges',
         name: 'Badges',
         component: Badges
+    },
+    {
+        path: '/badges/:id',
+        name: 'BadgesDetails',
+        component: BadgesDetails
     }
 ]
 
