@@ -31,33 +31,34 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default{
     name: 'RegisterFormView',
-    components: {},
-    data() {
-        return{
-            email: '',
-            password: '',
-            name: '',
-            surname: '',
-            passwordError: ''/*,
-            badges: []*/
+    setup(){
+        const email = ref(null)
+        const password = ref(null)
+        const name = ref(null)
+        const surname = ref(null)
+        const passwordError = ref(null)
+
+        const handleSubmit = () => {
+            passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 chars long!' : ''  
         }
-    },
-    methods: {
-        handleSubmit(){
-            this.passwordError =  this.password.length < 6 ? 'the password must be at least 6 chars long!' : ''  
-        },
-        back(){
+        const back = () => {
             this.$router.go(-1)
         }
-    }/*,
-    mounted(){
-        fetch('http://localhost:3000/badges')
-            .then(res => res.res.json())
-            .then(data => this.badges = data)
-            .catch(err => console.log(err.message))
-    }*/
+
+        return{
+            email,
+            password,
+            name,
+            surname,
+            passwordError,
+            handleSubmit,
+            back
+        }
+    }
 }
 </script>
 
