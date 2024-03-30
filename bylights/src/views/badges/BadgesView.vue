@@ -1,7 +1,7 @@
 <template>
     <h1>BADGES</h1>
     <div v-for="badge in badges" :key="badge.id" class="badge">
-        <!--route-param dinamico 'id'. in questo caso cambia in base al badge.id-->
+        <!--passa nel router-link il route-param dinamico 'id'. in questo caso collegato al badge.id-->
         <router-link :to="{ name: 'BadgesDetails', params: { id: badge.id } }" >
             <h2>{{ badge.title }}</h2>
         </router-link>

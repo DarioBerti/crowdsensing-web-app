@@ -26,6 +26,8 @@ PROGETTO
 
     installo json-server per gestire i file json del database-DATABASE FINTO
 
+    uso formattazione composition API di vue 3
+
 -------------------------------------------------------------------------------------------------------------------
 
 teleport component for modals
@@ -50,4 +52,4 @@ PHP
 
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
--> VA BENE USARE JSON SERVER PER TUTTO IL DTABASE O LO DEVO CREARE SERIAMENTE IN ALTRO MODO?
+->VA BENE USARE JSON SERVER PER TUTTO IL DTABASE O LO DEVO CREARE SERIAMENTE IN ALTRO MODO?

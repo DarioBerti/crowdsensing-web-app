@@ -8,7 +8,7 @@
         <p>the badge route param id is: {{ id }}</p>
     </div>
     <div v-else>
-        <p>Loading details...</p>
+        <p>Loading badge details...</p>
     </div>
 </template>
 <script>
