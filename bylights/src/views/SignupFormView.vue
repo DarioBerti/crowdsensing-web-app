@@ -11,7 +11,7 @@
                 <input type="email" required v-model="email">
                 <label>Password</label>
                 <input type="password" required v-model="password">
-                <div v-if="this.passwordError" class="error">
+                <div v-if="passwordError" class="error">
                     {{ passwordError }}
                 </div>
                 <div>
@@ -27,19 +27,24 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default{
     name: 'SignupFormView',
-    components: {},
-    data() {
-        return{
-            email: '',
-            password: '',
-            passwordError: ''
+    setup(){
+        const email = ref(null)
+        const password = ref(null)
+        const passwordError = ref(null)
+
+        const handleSubmit = () => {
+            passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 characters long :(' : ''  
         }
-    },
-    methods: {
-        handleSubmit(){
-            this.passwordError =  this.password.length < 6 ? 'the password must be at least 6 chars long!' : ''  
+
+        return{
+            email,
+            password,
+            passwordError,
+            handleSubmit
         }
     }
 }
