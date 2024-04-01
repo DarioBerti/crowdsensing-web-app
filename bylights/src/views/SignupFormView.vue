@@ -34,7 +34,7 @@ export default{
     setup(){
         const email = ref(null)
         const password = ref(null)
-        const passwordError = ref(null)
+        const passwordError = ref('')
 
         const handleSubmit = () => {
             passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 characters long :(' : ''  

@@ -40,7 +40,7 @@ export default{
         const password = ref(null)
         const name = ref(null)
         const surname = ref(null)
-        const passwordError = ref(null)
+        const passwordError = ref('')
 
         const handleSubmit = () => {
             passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 chars long!' : ''  
