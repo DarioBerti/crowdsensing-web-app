@@ -1,5 +1,6 @@
 <template>
     <h1>BADGES</h1>
+    <div v-if="error">{{ error }}</div>
     <div v-for="badge in badges" :key="badge.id" class="badge">
         <!--passa nel router-link il route-param dinamico 'id'. in questo caso collegato al badge.id-->
         <router-link :to="{ name: 'BadgesDetails', params: { id: badge.id } }" >
@@ -8,20 +9,37 @@
     </div>
 </template>
 <script>
-    export default{
-        data(){
-            return{
-                badges: []
-            }
-        },
-        mounted(){
-            fetch('http://localhost:3000/badges')
-            .then(res => res.json())
-            .then(data => this.badges = data)
-            .catch(err => console.log(err.message))
+import { ref, onMounted } from 'vue';
+
+export default {
+  setup() {
+    const badges = ref([]);
+    const error = ref(null);
+
+    const fetchBadges = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/badges');
+        if(!response.ok){
+            console.log("no data available");
         }
-    }
+        badges.value = await response.json();
+      } catch (err) {
+        error.value = err.message;
+        console.log(error.value);
+      }
+    };
+
+    onMounted(fetchBadges);
+
+    return {
+      badges,
+      error
+    };
+  }
+};
 </script>
+
+
 <style>
     .badge h2{
         background: #f4f4f4;
