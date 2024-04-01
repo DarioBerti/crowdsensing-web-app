@@ -9,34 +9,20 @@
     </div>
 </template>
 <script>
-import { ref, onMounted } from 'vue';
+import GetBadges from '../../composables/GetBadges.js'
+import { onMounted } from 'vue'
 
-export default {
-  setup() {
-    const badges = ref([]);
-    const error = ref(null);
+export default{
+    name: 'BadgesView',
+    setup(){
+        //salvo in const tutti i dati dalla funzione GetBadges()
+        const {badges, error, fetchBadges} = GetBadges()
 
-    const fetchBadges = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/badges');
-        if(!response.ok){
-            console.log("no data available");
-        }
-        badges.value = await response.json();
-      } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
-      }
-    };
+        onMounted(fetchBadges)
 
-    onMounted(fetchBadges);
-
-    return {
-      badges,
-      error
-    };
-  }
-};
+        return {badges, error}
+    }
+}
 </script>
 
 

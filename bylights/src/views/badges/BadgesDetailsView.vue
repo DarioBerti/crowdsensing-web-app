@@ -1,8 +1,8 @@
 <!--THIS PAGE IS A DETAILS PAGE, AN EXTENSION OF ANOTHER PAGE -> IT USES ROUTE PARAMS-->
 <template>
   <div v-if="badge">
-    <h1>Badges details page</h1>
-    <h1>{{ badge.title }}</h1>
+    <h1>BADGES DETAILS</h1>
+    <h2>{{ badge.title }}</h2>
     <p>the badge id is: {{ id }}</p>
     <p>dettagli del badge: {{ badge.details }}</p>
     <p>the badge route param id is: {{ id }}</p>
@@ -19,9 +19,9 @@ import { useRoute } from 'vue-router';
 export default {
   name: 'BadgesDetailsView',
   setup() {
-    const badge = ref(null);
     const route = useRoute();
     const id = ref(route.params.id);
+    const badge = ref(null);
     const error = ref(null);
 
     const fetchBadgeDetails = async () => {
