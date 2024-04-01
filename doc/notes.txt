@@ -30,25 +30,23 @@ PROGETTO
 
 -------------------------------------------------------------------------------------------------------------------
 
-teleport component for modals
-suspence component for asynchronous components
+(teleport component for modals)
+(suspence component for asynchronous components)?
 router-link normali per pagine diverse
 params dinamici, per aprire diverse pagine in base a cosa clicchi. route-param cambia ma è lo stesso file vue. CONCETTI DIVERSI MA STESSA PAGINA.
     ($route.params.id)
+props per passare dati a componenti della pagina
+Props: Ideale per la comunicazione diretta tra componenti in una relazione genitore-figlio. Permette la reattività e una struttura chiara di passaggio dati.
+Route Params: Migliore per passare dati legati alla navigazione o allo stato del route, come ID o altri parametri, specialmente quando si passa da una pagina all'altra.
+
+
+
 
 folder "public" for files i don't want to go through webpack. HARD-CODING
 main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)
 Vue.js root in cui tutti il resto è innestato. chiama i .vue principali. PARENT FILE
 uso "npm run serve"
 uso "npx json-server --watch data/db.json"
-
-
-PHP
-    header('Access-Control-Allow-Origin: http://localhost:8080');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-    header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept');
-    Questo dice al browser che è ok accettare richieste dal frontend che è servito dalla porta 8080.
-    Ricorda che questa è una configurazione per lo sviluppo
 
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:

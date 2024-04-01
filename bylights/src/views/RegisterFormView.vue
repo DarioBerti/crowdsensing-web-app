@@ -32,6 +32,7 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default{
     name: 'RegisterFormView',
@@ -41,12 +42,13 @@ export default{
         const name = ref(null)
         const surname = ref(null)
         const passwordError = ref('')
+        const router = useRouter()
 
         const handleSubmit = () => {
             passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 chars long!' : ''  
         }
         const back = () => {
-            this.$router.go(-1)
+            router.go(-1)
         }
 
         return{
