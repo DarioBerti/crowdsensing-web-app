@@ -3,6 +3,7 @@ import RegisterFormView from '../views/RegisterFormView.vue'
 import SignupFormView from '../views/SignupFormView.vue'
 import Badges from '../views/badges/BadgesView.vue'
 import HomeView from '../views/HomeView.vue'
+import MapView from '../views/MapView.vue'
 import BadgesDetails from '../views/badges/BadgesDetailsView.vue'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
         path: '/homeView',
         name: 'HomeView',
         component: HomeView
+    },
+    {
+        path: '/mapView',
+        name: 'MapView',
+        component: MapView
     },
     {
         path: '/badges/:id',
