@@ -1,23 +1,62 @@
 <template>
-    <div ref="mapContainer" class="full-screen-map" ></div>
+    <!--contenitore parent che contiene elementi che si sovrappongono-->
+    <div class = "mapLayout">
+        <div ref="mapContainer" class="full-screen-map" ></div>
+        <div class="record-icon">
+            <!--binding per svg-->
+            <img :src="recordIcon" alt="record icon" class = "record-style">
+        </div>
+    </div>
+    
 </template>
 
 <style scoped>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+    }
     .full-screen-map {
-        width: 100vw;  /* 100% della larghezza della viewport */
-        height: 100vh; /* 100% dell'altezza della viewport */
-        position: fixed; /* Opzionale: per rendere la mappa posizionata sopra tutto */
+        /*width: 100vw; 
+        height: 100vh; 
+        position: fixed; 
         top: 0;
-        left: 0;
+        left: 0;*/
+        height: 100%;   /*utilizza intera altezza di contenitore parent */
+    }
+
+    .mapLayout{
+        position: relative; /*posizione relativa per container parent */
+        height: 100vh;
+        top: 0;
+    }
+    .record-icon{
+        position: absolute; /*interrompe flusso del documento e viene messo in sovrapposizione in base anche al z-index */
+        bottom: 10px; /* Posiziona 10px sopra il fondo del contenitore */
+        left: 50%; /* Posiziona a metà del contenitore sull'asse orizzontale */
+        transform: translateX(-50%); /* Sposta a sinistra di metà della sua larghezza per centrarlo */
+        z-index: 1000;  /*così elemento appare al di sopra degli altri elementi del contenitore */
+    }
+    .record-style{
+        height: 10%;
+        width: 10%;
+    }
+    @media (max-width: 600px) {
+        .record-style{
+            height: 25%;
+            width: 25%
+        }
     }
 </style>
 
 <script>
-    import 'leaflet/dist/leaflet.css';
-    import { Icon } from 'leaflet';
-    import 'leaflet/dist/leaflet.css';
+    import 'leaflet/dist/leaflet.css'
+    import { Icon } from 'leaflet'
+    import 'leaflet/dist/leaflet.css'
     import {onMounted, ref} from 'vue'
     import L from 'leaflet'
+    import recordIcon from '../assets/record-svg.svg'
 
     export default{
         name: 'MapView',
@@ -60,7 +99,7 @@
 
             onMounted(openMap)
 
-            return{lat, lng, getLocation, map, mapContainer, openMap}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon}
         }
     }
 </script>
