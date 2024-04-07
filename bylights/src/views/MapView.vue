@@ -11,12 +11,6 @@
 </template>
 
 <style scoped>
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-    }
     .full-screen-map {
         /*width: 100vw; 
         height: 100vh; 
@@ -37,6 +31,7 @@
         left: 50%; /* Posiziona a metà del contenitore sull'asse orizzontale */
         transform: translateX(-50%); /* Sposta a sinistra di metà della sua larghezza per centrarlo */
         z-index: 1000;  /*così elemento appare al di sopra degli altri elementi del contenitore */
+        text-align: center;
     }
     .record-style{
         height: 10%;

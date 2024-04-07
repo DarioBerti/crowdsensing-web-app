@@ -52,12 +52,13 @@ export default{
 
 <style scoped>
     form {
-    max-width: 420px;
-    margin: 30px auto;
-    background:white;
-    text-align: left;
-    padding: 40px;
-    border-radius: 10px;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        max-width: 420px;
+        margin: 30px auto;
+        background:white;
+        text-align: left;
+        padding: 40px;
+        border-radius: 10px;
     }
     label, p{
         color: #aaa;
