@@ -105,6 +105,8 @@
             }
 
             const openMap = () => {
+                console.log("MOUNTED MAP RECORDING VIEW")
+
                 //legge la posizione iniziale e set di latitudine, lungitudine e marker iniziale
                 getLocation();
 
