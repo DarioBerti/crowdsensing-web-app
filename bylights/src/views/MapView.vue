@@ -3,11 +3,18 @@
     <div class = "mapLayout">
         <div ref="mapContainer" class="full-screen-map" ></div>
         <div class="record-icon">
-            <!--binding per svg-->
-            <img :src="recordIcon" alt="record icon" class = "record-style">
+            <router-link to="/mapRecordingView">
+                <!--binding per svg-->
+                <img :src="recordIcon" alt="record icon" class = "record-style">
+            </router-link>
+        </div>
+        <div class="saved-paths">
+            <!--routing link alla pagina di MapRecordingView-->
+            <router-link to="" class="SavedPathsRoutingLink">
+                saved paths
+            </router-link>
         </div>
     </div>
-    
 </template>
 
 <style scoped>
@@ -34,8 +41,30 @@
         text-align: center;
     }
     .record-style{
-        height: 10%;
-        width: 10%;
+        height: 15%;
+        width: 15%;
+    }
+    .saved-paths{
+        position: absolute;
+        z-index: 1000;
+
+        top: 10px;
+        left: 10px;
+    }
+    .SavedPathsRoutingLink {
+        background-color: white;  /* Colore di sfondo */
+        border-radius: 10px;     /* Angoli arrotondati */
+        padding: 10px;           /* Padding intorno al testo */
+        text-align: center;      /* Allineamento del testo */
+        
+        /* Altre proprietà per abbellire il link */
+        color: black;            /* Colore del testo */
+        display: inline-block;   /* Renderlo un blocco ma con comportamento in linea */
+        cursor: pointer;         /* Cambiare il cursore per indicare che è cliccabile */
+
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        text-decoration: none;
     }
     @media (max-width: 600px) {
         .record-style{
@@ -81,6 +110,8 @@
             }
 
             const openMap = () => {
+                console.log("MOUNTED MAP VIEW")
+
                 //legge la posizione iniziale e set di latitudine, lungitudine e marker iniziale
                 getLocation();
 
