@@ -15,7 +15,7 @@
             <div v-if="changeFlag">
                 <div class="saved-paths">
                     <!--routing link alla pagina di MapRecordingView-->
-                    <router-link to="" class="SavedPathsRoutingLink">
+                    <router-link to="/savedPathsViews" class="SavedPathsRoutingLink">
                         saved paths
                     </router-link>
                 </div>
@@ -88,6 +88,9 @@
         font-family: Avenir, Helvetica, Arial, sans-serif;
         font-weight: bold;
         text-decoration: none;
+    }
+    .SavedPathsRoutingLink:hover{
+        background-color: #eee;
     }
     .walkingText {
         margin: 0;

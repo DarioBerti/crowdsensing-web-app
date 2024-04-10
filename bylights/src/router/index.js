@@ -5,6 +5,7 @@ import Badges from '../views/badges/BadgesView.vue'
 import HomeView from '../views/HomeView.vue'
 import MapView from '../views/MapView.vue'
 import MapRecordingView from '../views/MapRecordingView.vue'
+import SavedPathsView from '@/views/SavedPathsView.vue'
 import BadgesDetails from '../views/badges/BadgesDetailsView.vue'
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
         path: '/mapRecordingView',
         name: 'MapRecordingView',
         component: MapRecordingView
+    },
+    {
+        path: '/savedPathsViews',
+        name: SavedPathsView,
+        component: SavedPathsView
     },
     {
         path: '/badges/:id',
