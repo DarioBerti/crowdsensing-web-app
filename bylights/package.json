@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
     "json-server": "^1.0.0-alpha.23",
     "leaflet": "^1.9.4",
     "vue": "^3.2.13",
