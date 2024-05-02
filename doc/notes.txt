@@ -30,6 +30,11 @@ PROGETTO
 
     uso cartella composables per rendere codice delle view .vue più leggibile, li divido dalla funzione di fetch
 
+    marker della mappa non funziona sempre, quindi uso funzioni async 
+
+    CREATO IL DB CON MYSQL WORKBENCH, HA UN ALTRO ip
+    incomincio la confugurazione dell cross tra i due ip front-end e backend
+
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
@@ -52,6 +57,4 @@ uso "npx json-server --watch data/db.json"
 
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
-per ora sto cercando di usare molte funzionalità di vue 3: router, componenti, ruote param dinamici, composables
-mysql workbench per tabelle db
-mapbox per le mappe, o meglio libreria vue
+-> come differisco nel database i vari percorsi?

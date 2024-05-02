@@ -4,7 +4,6 @@ import SignupFormView from '../views/SignupFormView.vue'
 import Badges from '../views/badges/BadgesView.vue'
 import HomeView from '../views/HomeView.vue'
 import MapView from '../views/MapView.vue'
-import MapRecordingView from '../views/MapRecordingView.vue'
 import SavedPathsView from '@/views/SavedPathsView.vue'
 import BadgesDetails from '../views/badges/BadgesDetailsView.vue'
 
@@ -33,11 +32,6 @@ const routes = [
         path: '/mapView',
         name: 'MapView',
         component: MapView
-    },
-    {
-        path: '/mapRecordingView',
-        name: 'MapRecordingView',
-        component: MapRecordingView
     },
     {
         path: '/savedPathsViews',
