@@ -34,7 +34,12 @@ PROGETTO
 
     CREATO IL DB CON MYSQL WORKBENCH, HA UN ALTRO ip
     incomincio la confugurazione dell cross tra i due ip front-end e backend
+    uso due porte:
+        apache -> per richieste a SERVER HTTP:
+        MySql -> per richieste dirette al database
 
+
+    faccio il database considerando le SESSION per gestire utente/admin
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
@@ -55,6 +60,12 @@ Vue.js root in cui tutti il resto è innestato. chiama i .vue principali. PARENT
 uso "npm run serve"
 uso "npx json-server --watch data/db.json"
 
+backend php, prima di ogni richiesta http
+    // Impostazione degli header CORS per consentire richieste da localhost:8080
+    header("Access-Control-Allow-Origin: http://localhost:8080");
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
 -> come differisco nel database i vari percorsi?
