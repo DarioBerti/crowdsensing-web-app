@@ -20,39 +20,39 @@ use ByLights;
 -- _____________ 
 
 create table ADMIN (
-     admin_id varchar(50) not null,
+     admin_id int not null auto_increment,
      username varchar(50) not null,
      name varchar(50) not null,
      surname varchar(50) not null,
      email varchar(50) not null,
      password varchar(64) not null,
-     id_profile_img varchar(50),
+     id_profile_img int,
      constraint ID_ADMIN_ID primary key (admin_id));
 
 create table BADGE (
-     badge_id varchar(50) not null,
+     badge_id int not null auto_increment,
      nameBadge varchar(50) not null,
      description varchar(50) not null,
      constraint ID_BADGE_ID primary key (badge_id));
 
 create table PATH (
-     path_id varchar(50) not null,
-     path_user_id varchar(50) not null,
+     path_id int not null auto_increment,
+     path_user_id int not null,
      brightness float(30) not null,
-     view_user_id varchar(50) not null,
-     del_admin_id varchar(50) not null,
-     Ana_admin_id varchar(50),
-     Rec_user_id varchar(50) not null,
+     view_user_id int not null,
+     del_admin_id int not null,
+     Ana_admin_id int,
+     Rec_user_id int not null,
      constraint ID_PATH_ID primary key (path_id));
 
 create table PROFILE_IMAGE (
-     id_profile_img varchar(50) not null,
+     id_profile_img int not null auto_increment,
      constraint ID_PROFILE_IMAGE_ID primary key (id_profile_img));
 
 create table SESSION (
-     session_id varchar(50) not null,
-     session_user_id varchar(50) null,
-     session_admin_id varchar(50) null,
+     session_id int not null auto_increment,
+     session_user_id int null,
+     session_admin_id int null,
      data datetime not null,
      created_at datetime not null,
      last_activity datetime not null,
@@ -66,7 +66,7 @@ create table SESSION (
 );
 
 create table USER (
-     user_id varchar(50) not null,
+     user_id int not null auto_increment,
      username varchar(50) not null,
      name varchar(50) not null,
      surname varchar(50) not null,
@@ -74,12 +74,12 @@ create table USER (
      password varchar(64) not null,
      dateRegistration date not null,
      BadgesAcquired int not null,
-     id_profile_img varchar(50) not null,
+     id_profile_img int not null,
      constraint ID_USER_ID primary key (user_id));
 
 create table USER_BADGE (
-     user_id_earner varchar(50) not null,
-     badge_id_acquired varchar(50) not null,
+     user_id_earner int not null,
+     badge_id_acquired int not null,
      constraint ID_USER_BADGE_ID primary key (user_id_earner, badge_id_acquired),
 	 constraint FK_USER foreign key (user_id_earner) references USER(user_id),
      constraint FK_BADGE foreign key (badge_id_acquired) references BADGE(badge_id)

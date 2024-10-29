@@ -1,3 +1,3 @@
 -- Insert sample data
-INSERT INTO  ()
+INSERT INTO  (admin_id, )
 VALUES
