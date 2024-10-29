@@ -40,6 +40,9 @@ PROGETTO
 
 
     faccio il database considerando le SESSION per gestire utente/admin
+
+    faccio backend con php
+    file php gestiscono solo logic e data, nessun elemento di presentazione. RITORNANO SOLO JSON
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
@@ -68,4 +71,4 @@ backend php, prima di ogni richiesta http
     header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
--> come differisco nel database i vari percorsi?
+-> il lato backend lo faccio con php?
