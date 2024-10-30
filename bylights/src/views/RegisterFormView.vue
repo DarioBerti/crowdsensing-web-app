@@ -1,10 +1,11 @@
 <template>
     <div>
         <form @submit.prevent="handleSubmit">
-            <p @click="back" style="color:blue">--- Go back</p>
-            <div>
+            <p><a id="style-2" @click="back" class="back" data-replace="go back"><span>go back</span></a></p>
+            
+            <!-- <div>
                 <router-link to="/badges"><p class="RoutingLink">Badges page</p></router-link>
-            </div>
+            </div> -->
             <h1>REGISTER</h1>
             <section>
                 <label>Nome:</label>
@@ -119,5 +120,55 @@ export default{
         margin-top: 10px;
         font-size: 0.8em;
         font-weight: bold;
+    }
+    
+    .back {
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        font-size:10px;
+        color: #555;
+        font-weight: bolder;
+    }
+    .back::before,
+    .back::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        left: 0;
+        }
+    .back::before {
+      background-color: #54b3d6;
+      height: 2px;
+      bottom: 0;
+      transform-origin: 100% 50%;
+      transform: scaleX(0);
+      transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    .back::after {
+      content: attr(data-replace);
+      height: 100%;
+      top: 0;
+      transform-origin: 100% 50%;
+      transform: translate3d(200%, 0, 0);
+      transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+      color: #54b3d6;
+    }
+
+    .back:hover::before {
+      transform-origin: 0% 50%;
+      transform: scaleX(1);
+    }
+    .back:hover::after {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .back span {
+      display: inline-block;
+      transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    .back:hover span{
+        transform: translate3d(-200%, 0, 0);
     }
 </style>
