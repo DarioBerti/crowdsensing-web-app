@@ -43,6 +43,10 @@ PROGETTO
 
     faccio backend con php
     file php gestiscono solo logic e data, nessun elemento di presentazione. RITORNANO SOLO JSON
+
+    incomincio a popolare il database
+
+    incomincio a fare il register e login collegato al database
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
@@ -71,4 +75,4 @@ backend php, prima di ogni richiesta http
     header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
--> il lato backend lo faccio con php?
+-> il lato backend lo faccio con phpo tipo con node.js?
