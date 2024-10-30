@@ -46,7 +46,7 @@ PROGETTO
 
     incomincio a popolare il database
 
-    incomincio a fare il register e login collegato al database
+    incomincio a fare il register e login collegato al database. lo script javascript lo metto dentro agli stessi file vue essendo scoped ad essi.
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
