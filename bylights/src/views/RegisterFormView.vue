@@ -16,7 +16,7 @@
                 <input type="email" required v-model="email">
                 <label>Password</label>
                 <input type="password" required v-model="password">
-                <div v-if="this.passwordError" class="error">
+                <div v-if="passwordError" class="error">
                     {{ passwordError }}
                 </div>
                 <div>
@@ -25,31 +25,63 @@
                 </div>
             </section>
             <div class="submit">
-                <button>Register</button>
+                <button :disabled="!isFormValid || !isPasswordValid">Register</button>
             </div>
         </form>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed, watch} from 'vue'
 import { useRouter } from 'vue-router'
 
 export default{
     name: 'RegisterFormView',
     setup(){
-        const email = ref(null)
-        const password = ref(null)
-        const name = ref(null)
-        const surname = ref(null)
+        const email = ref('')
+        const password = ref('')
+        const name = ref('')
+        const surname = ref('')
         const passwordError = ref('')
         const router = useRouter()
 
-        const handleSubmit = () => {
-            passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 chars long!' : ''  
-        }
         const back = () => {
             router.go(-1)
+        }
+        
+        
+        const isPasswordValid = computed(() => {
+            //contrllo sequenziale, prima controlla se nulla, poi ne controlla la lunghezza
+            return password.value && password.value.length >= 6
+        })
+        
+        //controlla se il form ha campi nulli
+        const isFormValid = computed(() => {
+            return (
+                name.value.trim() !== '' &&
+                surname.value.trim() !== '' &&
+                email.value.trim() !== '' &&
+                email.value.includes('@') &&
+                isPasswordValid.value
+            )
+        })
+
+        // Watch per aggiornare passwordError in tempo reale
+        watch(password, (newPassword) => {
+            if (newPassword && newPassword.length < 6) {
+                passwordError.value = 'Password must be at least 6 characters long';
+            } else {
+                passwordError.value = '';
+            }
+        })
+       
+        const handleSubmit = () => {
+            if (isFormValid.value) {
+                //invio dati al database
+
+                alert("Andato tutto bene");
+                window.location.reload(); // Ricarica la pagina dopo l'invio
+            }
         }
 
         return{
@@ -59,7 +91,9 @@ export default{
             surname,
             passwordError,
             handleSubmit,
-            back
+            back,
+            isPasswordValid,
+            isFormValid
         }
     }
 }
@@ -121,6 +155,12 @@ export default{
         font-size: 0.8em;
         font-weight: bold;
     }
+
+    button:disabled{
+        background: #ccc; /* Colore grigio per indicare che è disabilitato */
+        cursor: not-allowed; /* Mostra un'icona di divieto */
+        opacity: 0.6; /* Rende il bottone più trasparente */
+    }
     
     .back {
         overflow: hidden;
@@ -171,4 +211,7 @@ export default{
     .back:hover span{
         transform: translate3d(-200%, 0, 0);
     }
+    
+
+
 </style>
