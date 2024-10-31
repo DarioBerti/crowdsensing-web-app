@@ -8,7 +8,7 @@
             <section>
                 <label>Email:</label>
                 <!--v-model tracks user input real-time-->
-                <input type="email" required v-model="email">
+                <input type="email" required v-model="email" @invalid.prevent=""/>
                 <label>Password</label>
                 <input type="password" required v-model="password">
                 <div v-if="passwordError" class="error">
@@ -20,31 +20,55 @@
                 </div>
             </section>
             <div class="submit">
-                <button>Sign up</button>
+                <button :disabled="!isFormValid">Sign up</button>
             </div>
         </form>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed, watch} from 'vue'
 
 export default{
     name: 'SignupFormView',
     setup(){
-        const email = ref(null)
-        const password = ref(null)
+        const email = ref('')
+        const password = ref('')
         const passwordError = ref('')
 
+        const isFormValid = computed( () => {
+            return (
+                email.value.trim() !== '' &&
+                email.value.includes('@') &&
+                email.value.split('@')[1]?.trim() !== '' &&
+                password.value && password.value.length >= 6
+            )
+        })
+
+        //display messaggio errore password in tempo reale con watch
+        watch(password, (newPassword) => {
+            if (newPassword && newPassword.length < 6) {
+                passwordError.value = 'Password must be at least 6 characters long';
+            } else {
+                passwordError.value = '';
+            }
+        })
+
         const handleSubmit = () => {
-            passwordError.value =  password.value.length < 6 ? 'the password must be at least 6 characters long :(' : ''  
+            if (isFormValid.value) {
+                //invio dati al database
+
+                alert("Andato tutto bene");
+                window.location.reload(); // Ricarica la pagina dopo l'invio
+            }
         }
 
         return{
             email,
             password,
             passwordError,
-            handleSubmit
+            handleSubmit,
+            isFormValid
         }
     }
 }
@@ -105,5 +129,11 @@ export default{
         margin-top: 10px;
         font-size: 0.8em;
         font-weight: bold;
+    }
+
+    button:disabled{
+        background: #ccc; /* Colore grigio per indicare che è disabilitato */
+        cursor: not-allowed; /* Mostra un'icona di divieto */
+        opacity: 0.6; /* Rende il bottone più trasparente */
     }
 </style>

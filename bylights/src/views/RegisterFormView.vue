@@ -13,7 +13,8 @@
                 <label>Cognome:</label>
                 <input type="text" required v-model="surname">
                 <label>Email:</label>
-                <input type="email" required v-model="email">
+                <!--metto @invalid.prevent=""/ per non mostrare graficamente il messaggio di errore in input sbagliato, ma comunque c'è la validazione-->
+                <input type="email" required v-model="email" @invalid.prevent=""/>
                 <label>Password</label>
                 <input type="password" required v-model="password">
                 <div v-if="passwordError" class="error">
@@ -56,12 +57,13 @@ export default{
                 surname.value.trim() !== '' &&
                 email.value.trim() !== '' &&
                 email.value.includes('@') &&
+                email.value.split('@')[1]?.trim() !== '' &&
                 //il controllo è sequenziale, prima controlla se nulla, poi ne controlla la lunghezza
                 password.value && password.value.length >= 6
             )
         })
 
-        // Watch per aggiornare passwordError in tempo reale
+        // //display messaggio errore password in tempo reale con watch
         watch(password, (newPassword) => {
             if (newPassword && newPassword.length < 6) {
                 passwordError.value = 'Password must be at least 6 characters long';
@@ -70,6 +72,7 @@ export default{
             }
         })
        
+        //funzione destinata a controllare solo se è valida l'intera form per mandare i dati
         const handleSubmit = () => {
             if (isFormValid.value) {
                 //invio dati al database
