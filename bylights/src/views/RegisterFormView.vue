@@ -25,7 +25,7 @@
                 </div>
             </section>
             <div class="submit">
-                <button :disabled="!isFormValid || !isPasswordValid">Register</button>
+                <button :disabled="!isFormValid">Register</button>
             </div>
         </form>
     </div>
@@ -49,12 +49,6 @@ export default{
             router.go(-1)
         }
         
-        
-        const isPasswordValid = computed(() => {
-            //contrllo sequenziale, prima controlla se nulla, poi ne controlla la lunghezza
-            return password.value && password.value.length >= 6
-        })
-        
         //controlla se il form ha campi nulli
         const isFormValid = computed(() => {
             return (
@@ -62,7 +56,8 @@ export default{
                 surname.value.trim() !== '' &&
                 email.value.trim() !== '' &&
                 email.value.includes('@') &&
-                isPasswordValid.value
+                //il controllo è sequenziale, prima controlla se nulla, poi ne controlla la lunghezza
+                password.value && password.value.length >= 6
             )
         })
 
@@ -92,7 +87,6 @@ export default{
             passwordError,
             handleSubmit,
             back,
-            isPasswordValid,
             isFormValid
         }
     }
