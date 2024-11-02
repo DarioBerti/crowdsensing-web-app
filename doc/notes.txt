@@ -47,6 +47,11 @@ PROGETTO
     incomincio a popolare il database
 
     incomincio a fare il register e login collegato al database. lo script javascript lo metto dentro agli stessi file vue essendo scoped ad essi.
+
+    per le richieste php uso async axios per dinamicità
+
+    nel backend non uso POST ma ad esempio "$input = json_decode(file_get_contents("php://input"), true)".
+    è più adatto al mio progetto e file json
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
