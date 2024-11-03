@@ -8,8 +8,10 @@
     $password = '';
     $port = 3308; // Porta del MySQL in XAMPP
 
-    require_once("db/database.php");
-    require_once("utils/functions.php");
-    $dbh = new DatabaseHelper($host, $dbname, $user, $password, $port);
+    require_once __DIR__ .  '/database.php';
+    require_once __DIR__  . '/../utils/functions.php';
+    // require_once 'C:/xampp/htdocs/tirocinio/crowdsensing-web-app/bylights/src/db/database.php';
+    // require_once 'C:/xampp/htdocs/tirocinio/crowdsensing-web-app/bylights/src/utils/functions.php';
+    $dbh = new DatabaseHelper($host, $user, $password, $dbname, $port);
     sec_session_start();
 ?>

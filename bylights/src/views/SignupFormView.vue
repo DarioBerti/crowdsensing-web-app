@@ -28,6 +28,8 @@
 
 <script>
 import { ref, computed, watch} from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default{
     name: 'SignupFormView',
@@ -35,6 +37,7 @@ export default{
         const email = ref('')
         const password = ref('')
         const passwordError = ref('')
+        const router = useRouter()
 
         const isFormValid = computed( () => {
             return (
@@ -54,12 +57,62 @@ export default{
             }
         })
 
-        const handleSubmit = () => {
+        //invio dati al database
+        const handleSubmit = async() => {
             if (isFormValid.value) {
-                //invio dati al database
+                //dati di login
+                const loginData = {
+                    email: email.value,
+                    password: password.value
+                };
+                
+                try {
+                    //richiesta a file endpoint php
+                    const response = await axios.post('http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/login.php', loginData, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        withCredentials: false
+                    });
+                    console.log(response.data);
 
-                alert("Andato tutto bene");
-                window.location.reload(); // Ricarica la pagina dopo l'invio
+                    if (response.data.success) {
+                        // login successo
+                        console.log(response.data.message);
+                        alert("Login effettuato con successo");
+
+                        //gestire login dati sessione e reindirizzamento
+                        router.push('/mapView');
+                    } else {
+                        // login fallito
+                        console.log(response.data.message);
+                        alert("Errore di login: " + response.data.message);
+                        
+                        //gestire login fallito
+                        //AGGIUNGERE MESSAGGIO DI FALLITO LOGIN
+                    }
+                } catch (error) {
+                    console.error("Errore durante la richiesta al backend: ", error);
+                    // window.location.reload();
+                }
+                
+                // axios.post('./db/api/login.php', loginData)
+                //     .then(response => {
+                //         console.log(response.data);
+                //         if(response.data.success){
+                //             //gestire login riuscito
+
+                //             console.log(response.data.message);
+                //         }else{
+                //             //gestire login fallito
+
+                //             console.log(response.data.message);
+                //         }
+                //     })
+                //     .catch(error => {
+                //         console.error("error login backend: ", error);
+                //     })
             }
         }
 
