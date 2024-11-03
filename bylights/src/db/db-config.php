@@ -1,9 +1,5 @@
 <?php
-    // Impostazione degli header CORS per consentire richieste da localhost:8080
-    header("Access-Control-Allow-Origin: http://localhost:8080");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
-    header("Content-Type: application/json");
+    // CORS abilitato con .htaccess
 
     // Parametri di connessione al database
     $host = '127.0.0.1';
