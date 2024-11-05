@@ -127,17 +127,44 @@
     import L from 'leaflet'
     import recordIcon from '../assets/record-svg.svg'
     import stopRecordIcon from '../assets/stop-record-svg.svg'
+    import axios from 'axios'
+    import { useRouter } from 'vue-router'
 
     export default{
         name: 'MapView',
 
         setup(){
-            const lat = ref(0)
-            const lng = ref(0)
-            const map = ref()
-            const mapContainer = ref()
+            const lat = ref(0);
+            const lng = ref(0);
+            const map = ref();
+            const mapContainer = ref();
+            const router = useRouter();
+            const user = ref({});
+
+            const created = async() => {
+                axios.get('http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/user.php', {
+                    withCredentials: true})
+                .then(response => {
+                    if (response.data.loggedIn) {
+                        user.value = response.data.user;
+                        console.log("id utente loggato: ", user.value.id);
+                        console.log("username utente loggato: ", user.value.username);
+                    } else {
+                        // Non autenticato, reindirizza al login
+                        console.log("utente non autenticato");
+                        router.push('/');
+                    }
+                })
+                .catch(() => {
+                    // Errore, reindirizza al login
+                    console.log("errore catch");
+                    router.push('/');
+                });
+
+            }
+
             const defaultIcon = new Icon({
-                iconUrl: require('leaflet/dist/images/marker-icon.png'), 
+                iconUrl: require('leaflet/dist/images/marker-icon.png'),
                 shadowUrl: require('leaflet/dist/images/marker-shadow.png')
             });
             const changeFlag = ref(true)
@@ -161,8 +188,6 @@
 
             const openMap = async() => {
                 try{
-                    console.log("MOUNTED MAP VIEW")
-
                     //legge la posizione iniziale e set di latitudine, lungitudine e marker iniziale
                     await getLocation()
 
@@ -192,10 +217,13 @@
             }
 
             onMounted(() => {
-                openMap()
+                created();
+                openMap();
             })
 
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon}
+
+
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user}
         }
     }
 </script>

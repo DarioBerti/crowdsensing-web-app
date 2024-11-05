@@ -73,21 +73,15 @@ export default{
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         },
-                        withCredentials: false
+                        withCredentials: true
                     });
-                    console.log(response.data);
-
+                    
                     if (response.data.success) {
-                        // login successo
-                        console.log(response.data.message);
-                        alert("Login effettuato con successo");
-
                         //gestire login dati sessione e reindirizzamento
                         router.push('/mapView');
                     } else {
                         // login fallito
-                        console.log(response.data.message);
-                        alert("Errore di login: " + response.data.message);
+                        console.log("errore nel login response.data:", response.data);
                         
                         //gestire login fallito
                         //AGGIUNGERE MESSAGGIO DI FALLITO LOGIN
@@ -96,23 +90,6 @@ export default{
                     console.error("Errore durante la richiesta al backend: ", error);
                     // window.location.reload();
                 }
-                
-                // axios.post('./db/api/login.php', loginData)
-                //     .then(response => {
-                //         console.log(response.data);
-                //         if(response.data.success){
-                //             //gestire login riuscito
-
-                //             console.log(response.data.message);
-                //         }else{
-                //             //gestire login fallito
-
-                //             console.log(response.data.message);
-                //         }
-                //     })
-                //     .catch(error => {
-                //         console.error("error login backend: ", error);
-                //     })
             }
         }
 
