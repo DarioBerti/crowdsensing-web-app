@@ -52,6 +52,10 @@ PROGETTO
 
     nel backend non uso POST ma ad esempio "$input = json_decode(file_get_contents("php://input"), true)".
     è più adatto al mio progetto e file json
+
+    nel frontend dato che uso vue, uso axios.post
+
+    uso sessioni php per gestire utenti loggati
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
@@ -70,6 +74,7 @@ folder "public" for files i don't want to go through webpack. HARD-CODING
 main.js renders app and sends it to DOM and sends it to be seen INSIDE the index.html(in public)
 Vue.js root in cui tutti il resto è innestato. chiama i .vue principali. PARENT FILE
 uso "npx json-server --watch data/db.json" non serve perchè ho database vero
+
 uso "npm run serve"
 
 backend php, prima di ogni richiesta http
@@ -80,4 +85,6 @@ backend php, prima di ogni richiesta http
     header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
--> il lato backend lo faccio con phpo tipo con node.js?
+-> DUBBIO PRINCIPALE FARE SESSION CON SUPERVARIABILI GLOBALI TIPO $_SESSION OPPURE USARE JWT TOKENS? faccio fatica a trovare materiale sulle sessioni php
+-> nel caso di jwt, token devo controllarli con file php a parte e modellarli nel database?
+-> tesi sarà principalmente su vue?
