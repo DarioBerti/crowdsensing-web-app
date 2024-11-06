@@ -1,5 +1,4 @@
 <?php
-
     header('Access-Control-Allow-Origin:  http://localhost:8080');
     header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
     header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
@@ -23,47 +22,67 @@
     $input = json_decode(file_get_contents("php://input"), true);
 
     // Verifica input preso da axios post
-    if (is_null($input) || !isset($input['email']) || !isset($input['password'])) {
+    if (is_null($input) || !isset($input['email']) || !isset($input['password']) || !isset($input['name']) || !isset($input['surname']) || !isset($input['username'])) {
         echo json_encode(["success" => false, "message" => "Dati di input axios non validi"]);
         exit();
     }
 
+    $name = $input['name'];
+    $surname = $input['surname'];
+    $username = $input['username'];
     $email = $input['email'];
     $password = $input['password'];
 
     //stabilisce connessione 'conn' usando db-config
     $conn = $dbh->db;
     
-
-    //QUERY CHE DOVREBBE ESSERE IN FUNCTIONS.PHP
-    $query = "SELECT * FROM user WHERE email = ? AND password = ?";
+    // Prepara la query SQL per inserire un nuovo utente
+    $query = "INSERT INTO user (username, name, surname, email, password, dateRegistration, badgesAcquired, id_profile_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
     if ($stmt === false) {
         echo json_encode(["success" => false, "message" => "Errore del server nella preparazione della query"]);
         exit();
     }
-    
-    $stmt->bind_param("ss", $email, $password);
+
+    // Verifica se email o username esistono già
+    $checkQuery = "SELECT user_id FROM user WHERE email = ? OR username = ?";
+    $checkStmt = $conn->prepare($checkQuery);
+    $checkStmt->bind_param("ss", $email, $username);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+
+    if ($checkResult->num_rows > 0) {
+        // Email o username già esistenti
+        echo json_encode(["success" => false, "message" => "Email o Username già in uso"]);
+        exit();
+    }
+
+    $checkStmt->close();
+
+
+    // Imposta badges_acquired a 0 e id_profile_image a NULL
+    $badges_acquired = 0;
+    $id_profile_img = NULL;
+    $dateRegistration = date('Y-m-d H:i:s');
+
+    // Binding dei parametri
+    $stmt->bind_param("ssssssis", $username, $name, $surname, $email, $password, $dateRegistration, $badges_acquired, $id_profile_img);
     if ($stmt->execute() === false) {
         echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
         exit();
     }
 
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        // Recupera i dati dell'utente
-        $row = $result->fetch_assoc();
-
+    if ($stmt->execute()) {
         //salva dati della sessione
-        $_SESSION['user_id'] = $row['user_id'];
-        $_SESSION['username'] = $row['username'];
+        $_SESSION['user_id'] = $conn->insert_id;
+        $_SESSION['username'] = $username;
 
         echo json_encode(["success" => true, "message" => "Login successful"]);
     } else {
         echo json_encode(["success" => false, "message" => "Invalid credentials"]);
     }
-    
-    //chiusura connessione al database
+
+    // Chiude la connessione al database
     $stmt->close();
     $conn->close();

@@ -12,6 +12,8 @@
                 <input type="text" required v-model="name">
                 <label>Cognome:</label>
                 <input type="text" required v-model="surname">
+                <label>Username:</label>
+                <input type="text" required v-model="username">
                 <label>Email:</label>
                 <!--metto @invalid.prevent=""/ per non mostrare graficamente il messaggio di errore in input sbagliato, ma comunque c'è la validazione-->
                 <input type="email" required v-model="email" @invalid.prevent=""/>
@@ -35,12 +37,14 @@
 <script>
 import { ref, computed, watch} from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 export default{
     name: 'RegisterFormView',
     setup(){
         const email = ref('')
         const password = ref('')
+        const username = ref('')
         const name = ref('')
         const surname = ref('')
         const passwordError = ref('')
@@ -55,6 +59,7 @@ export default{
             return (
                 name.value.trim() !== '' &&
                 surname.value.trim() !== '' &&
+                username.value.trim() !== '' &&
                 email.value.trim() !== '' &&
                 email.value.includes('@') &&
                 email.value.split('@')[1]?.trim() !== '' &&
@@ -72,21 +77,51 @@ export default{
             }
         })
        
-        //funzione destinata a controllare solo se è valida l'intera form per mandare i dati
-        const handleSubmit = () => {
+        //invio dati al database
+        const handleSubmit = async() => {
             if (isFormValid.value) {
-                //invio dati al database
-
-                alert("Andato tutto bene");
-                window.location.reload(); // Ricarica la pagina dopo l'invio
+                //dati di login
+                const loginData = {
+                    name: name.value,
+                    surname: surname.value,
+                    username: username.value,
+                    email: email.value,
+                    password: password.value
+                };
+                
+                try {
+                    //richiesta a file endpoint php
+                    const response = await axios.post('http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/register.php', loginData, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        withCredentials: true
+                    });
+                    
+                    if (response.data.success) {
+                        //gestire login dati sessione e reindirizzamento
+                        //va al login
+                        router.push('/');
+                    } else {
+                        // login fallito
+                        console.log("errore nel register response.data:", response.data);
+                        
+                        //gestire registrazione fallita
+                        //AGGIUNGERE MESSAGGIO DI FALLITO REGISTRAZIONE
+                    }
+                } catch (error) {
+                    console.error("Errore durante la richiesta al backend: ", error);
+                }
             }
         }
 
         return{
-            email,
-            password,
             name,
             surname,
+            username,
+            email,
+            password,
             passwordError,
             handleSubmit,
             back,
