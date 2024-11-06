@@ -60,6 +60,8 @@
 
     $checkStmt->close();
 
+    // Hash della password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Imposta badges_acquired a 0 e id_profile_image a NULL
     $badges_acquired = 0;
@@ -67,7 +69,7 @@
     $dateRegistration = date('Y-m-d H:i:s');
 
     // Binding dei parametri
-    $stmt->bind_param("ssssssis", $username, $name, $surname, $email, $password, $dateRegistration, $badges_acquired, $id_profile_img);
+    $stmt->bind_param("ssssssis", $username, $name, $surname, $email, $hashed_password, $dateRegistration, $badges_acquired, $id_profile_img);
     if ($stmt->execute() === false) {
         echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
         exit();
