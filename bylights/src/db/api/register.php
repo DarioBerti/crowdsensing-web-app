@@ -54,7 +54,7 @@
 
     if ($checkResult->num_rows > 0) {
         // Email o username già esistenti
-        echo json_encode(["success" => false, "message" => "Email o Username già in uso"]);
+        echo json_encode(["success" => false, "message" => "Already in use"]);
         exit();
     }
 
@@ -76,7 +76,7 @@
     $executeResult = $stmt->execute();
     
     if ($executeResult === false) {
-        echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
+        echo json_encode(["success" => false, "message" => "server error in query execution"]);
         exit();
     }
 
