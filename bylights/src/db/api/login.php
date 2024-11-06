@@ -36,7 +36,7 @@
     
 
     //QUERY CHE DOVREBBE ESSERE IN FUNCTIONS.PHP
-    $query = "SELECT * FROM user WHERE email = ? AND password = ?";
+    $query = "SELECT user_id, username, password FROM user WHERE email = ?";
 
     $stmt = $conn->prepare($query);
     if ($stmt === false) {
@@ -44,7 +44,7 @@
         exit();
     }
     
-    $stmt->bind_param("ss", $email, $password);
+    $stmt->bind_param("s", $email);
     if ($stmt->execute() === false) {
         echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
         exit();
@@ -54,12 +54,19 @@
     if ($result->num_rows > 0) {
         // Recupera i dati dell'utente
         $row = $result->fetch_assoc();
+        $hashed_password = $row['password'];
 
-        //salva dati della sessione
-        $_SESSION['user_id'] = $row['user_id'];
-        $_SESSION['username'] = $row['username'];
 
-        echo json_encode(["success" => true, "message" => "Login successful"]);
+        if (password_verify($password, $hashed_password)) {
+            // Password corretta, imposta la sessione
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['username'] = $row['username'];
+
+            echo json_encode(["success" => true, "message" => "Login successful"]);
+        } else {
+            // Password errata
+            echo json_encode(["success" => false, "message" => "Invalid credentials"]);
+        }
     } else {
         echo json_encode(["success" => false, "message" => "Invalid credentials"]);
     }

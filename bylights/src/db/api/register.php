@@ -68,14 +68,19 @@
     $id_profile_img = NULL;
     $dateRegistration = date('Y-m-d H:i:s');
 
+    
     // Binding dei parametri
     $stmt->bind_param("ssssssis", $username, $name, $surname, $email, $hashed_password, $dateRegistration, $badges_acquired, $id_profile_img);
-    if ($stmt->execute() === false) {
+    
+    //salva execute
+    $executeResult = $stmt->execute();
+    
+    if ($executeResult === false) {
         echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
         exit();
     }
 
-    if ($stmt->execute()) {
+    if ($executeResult) {
         //salva dati della sessione
         $_SESSION['user_id'] = $conn->insert_id;
         $_SESSION['username'] = $username;
