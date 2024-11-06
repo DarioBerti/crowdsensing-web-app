@@ -12,9 +12,9 @@
     }
 
     //inizia sessione
-    require_once __DIR__ . '/../../utils/functions.php';
-    sec_session_start();
-
+    // Includi il gestore delle sessioni
+    //fa partire la session
+    require_once __DIR__ . '/../../utils/session_manager.php';
 
     require_once __DIR__ . '/../db-config.php';
 
@@ -84,6 +84,9 @@
         //salva dati della sessione
         $_SESSION['user_id'] = $conn->insert_id;
         $_SESSION['username'] = $username;
+
+        // Rigenera l'ID della sessione per prevenire session fixation
+        session_regenerate_id(true);
 
         echo json_encode(["success" => true, "message" => "Login successful"]);
     } else {
