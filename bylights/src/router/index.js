@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RegisterFormView from '../views/RegisterFormView.vue'
 import SignupFormView from '../views/SignupFormView.vue'
 import Badges from '../views/badges/BadgesView.vue'
-import HomeView from '../views/HomeView.vue'
 import MapView from '../views/MapView.vue'
 import SavedPathsView from '@/views/SavedPathsView.vue'
 import BadgesDetails from '../views/badges/BadgesDetailsView.vue'
@@ -22,11 +21,6 @@ const routes = [
         path: '/badges',
         name: 'Badges',
         component: Badges
-    },
-    {
-        path: '/homeView',
-        name: 'HomeView',
-        component: HomeView
     },
     {
         path: '/mapView',
