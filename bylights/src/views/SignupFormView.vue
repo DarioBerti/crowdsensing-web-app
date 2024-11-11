@@ -68,7 +68,7 @@ export default{
                 
                 try {
                     //richiesta a file endpoint php
-                    const response = await axios.post('http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/login.php', loginData, {
+                    const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/login.php`, loginData, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
