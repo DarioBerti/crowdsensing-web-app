@@ -5,11 +5,11 @@
         <div class="record-icon">
                 <div v-if="changeFlag">
                     <!--binding per svg-->
-                    <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording">
+                    <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording();/* startRecording();*/">
                 </div>
                 <div v-else>
                     <!--binding per svg-->
-                    <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording">
+                    <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording(); /*stopRecording();*/">
                 </div>
         </div>
             <div v-if="changeFlag">
@@ -125,8 +125,8 @@
     import 'leaflet/dist/leaflet.css'
     import {onMounted, ref} from 'vue'
     import L from 'leaflet'
-    import recordIcon from '../assets/record-svg.svg'
-    import stopRecordIcon from '../assets/stop-record-svg.svg'
+    import recordIcon from '@/assets/record-svg.svg'
+    import stopRecordIcon from '@/assets/stop-record-svg.svg'
     import axios from 'axios'
     import { useRouter } from 'vue-router'
 
@@ -140,9 +140,12 @@
             const mapContainer = ref();
             const router = useRouter();
             const user = ref({});
+            const changeFlag = ref(true);
+            // const brightnessValues = ref([]);
+            // let sensor = null;
 
             const created = async() => {
-                axios.get('http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/user.php', {
+                axios.get(`${process.env.VUE_APP_API_BASE_URL}/user.php`, {
                     withCredentials: true})
                 .then(response => {
                     if (response.data.loggedIn) {
@@ -167,7 +170,7 @@
                 iconUrl: require('leaflet/dist/images/marker-icon.png'),
                 shadowUrl: require('leaflet/dist/images/marker-shadow.png')
             });
-            const changeFlag = ref(true)
+            
 
             L.Marker.prototype.options.icon = defaultIcon;
 
@@ -212,18 +215,36 @@
 
             }
 
-            const switchRecording = () => {
-                changeFlag.value = !changeFlag.value
-            }
+             const switchRecording = () => {
+                 changeFlag.value = !changeFlag.value
+             }
+
+            // const startRecording = () => {
+            //     if ('AmbientLightSensor' in window) {
+            //         sensor = new AmbientLightSensor();
+            //         sensor.addEventListener('reading', () => {
+            //             brightnessValues.value.push(sensor.illuminance);
+            //             console.log('Luminosità corrente:', sensor.illuminance);
+            //         });
+            //         sensor.addEventListener('error', event => {
+            //             console.error('Errore del sensore:', event.error.name, event.error.message);
+            //         });
+            //         sensor.start();
+            //     } else {
+            //         console.warn('API Ambient Light Sensor non supportata in questo browser.');
+            //     }
+            // }
+
+            // const stopRecording = () => {
+
+            // }
 
             onMounted(() => {
                 created();
                 openMap();
             })
 
-
-
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user/*, startRecording, stopRecording*/}
         }
     }
 </script>
