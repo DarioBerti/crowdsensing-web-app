@@ -13,14 +13,15 @@
     require_once __DIR__ . '/functions.php';
     sec_session_start();
 
-    // Implementa il timeout della sessione
-    $timeout_duration = 1800; // 30 minuti
-
-    if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
-        session_unset();
-        session_destroy();
-        echo json_encode(["success" => false, "message" => "Sessione scaduta."]);
-        exit();
+    if(isset($_SESSION['user_id'])){
+        // Implementa il timeout della sessione
+        $timeout_duration = 1800; // 30 minuti
+        
+        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+            session_unset();
+            session_destroy();
+            echo json_encode(["success" => false, "message" => "Sessione scaduta. login"]);
+            exit();
+        }
+        $_SESSION['LAST_ACTIVITY'] = time();
     }
-
-    $_SESSION['LAST_ACTIVITY'] = time();
