@@ -91,7 +91,7 @@ export default{
                 
                 try {
                     //richiesta a file endpoint php
-                    const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/register.php`, loginData, {
+                    const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/register.php`, loginData, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
