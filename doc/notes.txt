@@ -85,6 +85,3 @@ backend php, prima di ogni richiesta http
     header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
--> DUBBIO PRINCIPALE FARE SESSION CON SUPERVARIABILI GLOBALI TIPO $_SESSION OPPURE USARE JWT TOKENS? faccio fatica a trovare materiale sulle sessioni php
--> nel caso di jwt, token devo controllarli con file php a parte e modellarli nel database?
--> tesi sarà principalmente su vue?
