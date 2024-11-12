@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-import GetBadges from '../../composables/GetBadges.js'
+import GetBadges from '@/composables/GetBadges.js'
 import { onMounted } from 'vue'
 
 export default{

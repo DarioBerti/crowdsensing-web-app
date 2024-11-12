@@ -1,24 +1,35 @@
-import { ref } from 'vue'
+// src/composables/GetBadges.js
 
-const GetBadges = () => {
-    const badges = ref([])
-    const error = ref(null)
+import { ref } from 'vue';
+import axios from 'axios';
 
-    const fetchBadges = async () => {
-        try {
-            let response = await fetch('http://localhost:3000/badges');
-            if(!response.ok){
-                throw Error('data not available')
-            }
-            badges.value = await response.json()
-            } 
-        catch (err) {
-            error.value = err.message
-            console.log(error.value)
-        }
+export default function GetBadges() {
+  // Definizione delle proprietà reattive
+  const badges = ref([]);
+  const error = ref(null);
+  const isLoading = ref(false);
+
+  // Funzione per recuperare i badge dall'API
+  const fetchBadges = async () => {
+    isLoading.value = true; // Inizia il caricamento
+    error.value = null;     // Resetta eventuali errori precedenti
+
+    try {
+      const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/BadgesList.php`);
+      badges.value = response.data; // Assegna i dati ricevuti
+    } catch (err) {
+      error.value = err.message || 'Errore nel recupero dei badge';
+      console.error('Errore FetchBadges:', err);
+    } finally {
+      isLoading.value = false; // Termina il caricamento
     }
+  };
 
-    return{ badges, error, fetchBadges}
+  // Restituisce le proprietà e le funzioni per essere utilizzate nei componenti
+  return {
+    badges,
+    error,
+    isLoading,
+    fetchBadges
+  };
 }
-
-export default GetBadges

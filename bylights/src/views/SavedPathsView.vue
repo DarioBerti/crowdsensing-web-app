@@ -7,26 +7,26 @@ export default {
       error: null
     };
   },
-  methods: {
-    fetchData() {
-      fetch('http://localhost/tirocinio/crowdsensing-web-app/bylights/db/api/test1.php')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.info = data;
-      })
-      .catch(error => {
-        this.error = error.message;
-      });
-    }
-  },
-  mounted() {
-    this.fetchData();
-  }
+   methods: {
+     fetchData() {
+       fetch(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/SavedPaths.php`)
+       .then(response => {
+         if (!response.ok) {
+           throw new Error('Network response was not ok');
+         }
+         return response.json();
+       })
+       .then(data => {
+         this.info = data;
+       })
+       .catch(error => {
+         this.error = error.message;
+       });
+     }
+   },
+   mounted() {
+     this.fetchData();
+   }
 };
 </script>
 

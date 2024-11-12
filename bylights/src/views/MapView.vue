@@ -145,7 +145,7 @@
             // let sensor = null;
 
             const created = async() => {
-                axios.get(`${process.env.VUE_APP_API_BASE_URL}/user.php`, {
+                axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
                     withCredentials: true})
                 .then(response => {
                     if (response.data.loggedIn) {
