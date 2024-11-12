@@ -56,6 +56,11 @@ PROGETTO
     nel frontend dato che uso vue, uso axios.post
 
     uso sessioni php per gestire utenti loggati
+
+    preparo codice per fare la build [11/11, 12/11, ...]
+    Ottimizzazione dei File: I file sono stati ottimizzati per la produzione (minificazione, suddivisione del codice, ecc.).
+
+    
 -------------------------------------------------------------------------------------------------------------------
 
 (teleport component for modals)
@@ -85,3 +90,4 @@ backend php, prima di ogni richiesta http
     header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
+ho cambiato gli import, le routes e la history per build senza warning. COME FACCIO AD ASSICURARMI CHE SIA CORRETTA?
