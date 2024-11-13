@@ -155,8 +155,8 @@
             let stream = null;
             let video = null;
             let totalAverageBrightness = ref(0);
-            const latitude = ref(0);
-            const longitude = ref(0);
+            const recordedLat = ref(0);
+            const recordedLng = ref(0);
             const pathDate = ref(new Date().toISOString());
             const startTime = ref(null); // Memorizza il timestamp di inizio
             const recordingDuration = ref(0); // Durata della registrazione in secondi
@@ -212,9 +212,6 @@
                             lat.value = position.coords.latitude
                             lng.value = position.coords.longitude
 
-                            latitude.value = lat.value;
-                            longitude.value = lng.value;
-
                             resolve()
                         }, reject)
                     }else{
@@ -226,7 +223,7 @@
             const openMap = async() => {
                 try{
                     //legge la posizione iniziale e set di latitudine, lungitudine e marker iniziale
-                    await getLocation()
+                    await getLocation();
 
                     //set del map.value
                     map.value = L.map(mapContainer.value, {zoomControl: false}).setView([lat.value, lng.value], 16);
@@ -236,10 +233,7 @@
                     }).addTo(map.value);
 
                     //aggiunta marker alla mappa
-                    // L.marker([lat.value, lng.value]).addTo(map.value);
                     markerRef.value = L.marker([lat.value, lng.value], { icon: blueIcon }).addTo(map.value);
-
-
 
                     // Utilizza setTimeout per richiamare invalidateSize dopo che la mappa è stata caricata
                     setTimeout(function () {
@@ -256,6 +250,11 @@
              }
 
             const startRecording = () => {
+                //setta il marker nella nuova posizione in cui si è appena incominciato a registrare
+                getLocation();
+                recordedLat.value = lat.value;
+                recordedLng.value = lng.value;
+
                 //cambia colore del marker da blu a rosso
                 markerRef.value.setIcon(redIcon);
 
@@ -311,7 +310,7 @@
                     });
                     })
                     .catch(err => console.error('Errore accesso webcam:', err));
-                };
+            };
 
 
             const stopRecording = () => {
@@ -347,7 +346,7 @@
                     console.log("total average a fine registrazione: ", totalAverageBrightness.value);
     
                     //calcola langitudine e latitudine
-                    //già settati 
+                    console.log("lat e long REGISTRATI", recordedLat.value, recordedLng.value);
 
                     //calcola la date
                     pathDate.value = new Date().toISOString().slice(0, 10);
@@ -400,7 +399,7 @@
                 openMap();
             })
 
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, latitude, longitude, pathDate, calculateAverage, startTime, recordingDuration}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration}
         }
     }
 </script>
