@@ -361,7 +361,7 @@
                     }
 
                     //manda i dati del path per essere salvato nel profilo utente
-                    //totalAverageBrightness, latitude, longitude, date, recordingDuration
+                    //totalAverageBrightness, recordedlat, recordedlng, longitude, date, recordingDuration
 
 
 
