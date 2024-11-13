@@ -313,7 +313,7 @@
                     video = null;
                 }
 
-                //controlla che abbastanza dati siano stati raccolti
+                //controlla che abbastanza dati siano stati raccolti prima di mandare i dati al profilo utente
                 if(checkEnoughValues()){
                     
                     //calcola la media totale di tutti i valori a fine della registrazione
@@ -323,7 +323,7 @@
                     //calcola langitudine e latitudine
     
                     //calcola la date
-                    pathDate.value = new Date().toISOString();
+                    pathDate.value = new Date().toISOString().slice(0, 10);
                     console.log("pathdate: ", pathDate.value);
     
                     //manda i dati del path per essere salvato nel profilo utente
