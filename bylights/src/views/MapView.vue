@@ -158,7 +158,8 @@
             const latitude = ref(0);
             const longitude = ref(0);
             const pathDate = ref(new Date().toISOString());
-            // const pathTime = ref(0);
+            const startTime = ref(null); // Memorizza il timestamp di inizio
+            const recordingDuration = ref(0); // Durata della registrazione in secondi
 
             const created = async() => {
                 axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
@@ -237,9 +238,7 @@
 
             const startRecording = () => {
                 //inizia a calcolare il tempo
-
-
-
+                startTime.value = Date.now();
 
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(s => {
@@ -321,16 +320,29 @@
                     console.log("total average a fine registrazione: ", totalAverageBrightness.value);
     
                     //calcola langitudine e latitudine
-    
+                    
+
                     //calcola la date
                     pathDate.value = new Date().toISOString().slice(0, 10);
                     console.log("pathdate: ", pathDate.value);
     
+                    //calcola il tempo
+                    if (startTime.value) {
+                        const endTime = Date.now();
+                        const temp = ((endTime - startTime.value) / 1000)/60; // Durata in minuti
+                        recordingDuration.value = parseFloat(temp.toFixed(2));
+                        console.log("Durata registrazione (minuti):", recordingDuration.value);
+                    }
+
                     //manda i dati del path per essere salvato nel profilo utente
-                    //totalAverageBrightness, latitude, longitude, date, pathime
+                    //totalAverageBrightness, latitude, longitude, date, recordingDuration
+
+
+
+
+
                 }
 
-                
                 // Resetta i valori di brightnessValues
                 brightnessValues.value = [];
                 console.log('Registrazione interrotta.');
@@ -361,7 +373,7 @@
                 openMap();
             })
 
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, latitude, longitude, pathDate, calculateAverage}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, latitude, longitude, pathDate, calculateAverage, startTime, recordingDuration}
         }
     }
 </script>
