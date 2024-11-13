@@ -154,6 +154,11 @@
             let animationFrameId = null;
             let stream = null;
             let video = null;
+            let totalAverageBrightness = ref(0);
+            const latitude = ref(0);
+            const longitude = ref(0);
+            const pathDate = ref(new Date().toISOString());
+            // const pathTime = ref(0);
 
             const created = async() => {
                 axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
@@ -231,6 +236,11 @@
              }
 
             const startRecording = () => {
+                //inizia a calcolare il tempo
+
+
+
+
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(s => {
                     stream = s;
@@ -250,7 +260,7 @@
                         setTimeout( () => {
                             //funzione principale che calcola i valori di luminosità
                             const update = () => {
-                            if (video.paused || video.ended) return;
+                            if (!video || video.paused || video.ended) return;
                             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                             try {
                                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -283,25 +293,18 @@
                 };
 
             const stopRecording = () => {
-                //calcola la media totale di tutti i valori a fine della registrazione
-                const totalAverageBrightness = calculateAverage();
-                console.log("total average a fine registrazione: ", totalAverageBrightness);
-
-                //salva la media totale nel profilo utente
-                
-
                 // Ferma l'animazione
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                     animationFrameId = null;
                 }
-
+                
                 // Ferma tutti i track del media stream
                 if (stream) {
                     stream.getTracks().forEach((track) => track.stop());
                     stream = null;
                 }
-
+                
                 // Rimuovi l'elemento video dal DOM
                 if (video) {
                     video.pause();
@@ -310,15 +313,32 @@
                     video = null;
                 }
 
+                //controlla che abbastanza dati siano stati raccolti
+                if(checkEnoughValues()){
+                    
+                    //calcola la media totale di tutti i valori a fine della registrazione
+                    totalAverageBrightness.value = calculateAverage();
+                    console.log("total average a fine registrazione: ", totalAverageBrightness.value);
+    
+                    //calcola langitudine e latitudine
+    
+                    //calcola la date
+                    pathDate.value = new Date().toISOString();
+                    console.log("pathdate: ", pathDate.value);
+    
+                    //manda i dati del path per essere salvato nel profilo utente
+                    //totalAverageBrightness, latitude, longitude, date, pathime
+                }
+
+                
                 // Resetta i valori di brightnessValues
                 brightnessValues.value = [];
-
                 console.log('Registrazione interrotta.');
             };
 
             const calculateAverage = () => {
-                if(brightnessValues.value.length <= 10){
-                    console.log("not enough values have been registered");
+                //controlla se sono stati registrati abbastanza dati
+                if(!checkEnoughValues()){
                     return 0;
                 }
 
@@ -328,14 +348,20 @@
                 return avg;
             }
 
-
+            const checkEnoughValues = () => {
+                if(brightnessValues.value.length <= 50){
+                    console.log("not enough values have been registered, walk for a little bit longer :)");
+                    return 0;
+                }
+                return 1;
+            }
 
             onMounted(() => {
                 created();
                 openMap();
             })
 
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, latitude, longitude, pathDate, calculateAverage}
         }
     }
 </script>
