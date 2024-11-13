@@ -104,7 +104,16 @@
 
         font-family: Avenir, Helvetica, Arial, sans-serif;
         font-weight: bold;
+
+        animation: blink 1.2s ease-in-out infinite;
     }
+    
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
     @media (max-width: 600px) {
         .record-style{
             height: 25%;
@@ -142,9 +151,9 @@
             const user = ref({});
             const changeFlag = ref(true);
             const brightnessValues = ref([]);
-            let animationFrameId = null
-            let stream = null
-            let video = null
+            let animationFrameId = null;
+            let stream = null;
+            let video = null;
 
             const created = async() => {
                 axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
@@ -221,94 +230,103 @@
                  changeFlag.value = !changeFlag.value
              }
 
-            //const startRecording = () => {
-            //    if ("AmbientLightSensor" in window) {
-            //        sensor = new AmbientLightSensor();
-            //        sensor.addEventListener('reading', () => {
-            //            brightnessValues.value.push(sensor.illuminance);
-            //            console.log('Luminosità corrente:', sensor.illuminance);
-            //        });
-            //        sensor.addEventListener('error', event => {
-            //            console.error('Errore del sensore:', event.error.name, event.error.message);
-            //        });
-            //        sensor.start();
-            //    } else {
-            //        console.warn('API Ambient Light Sensor non supportata in questo browser.');
-            //    }
-            //}
-
             const startRecording = () => {
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(s => {
-      stream = s;
-      video = document.createElement('video');
-      video.srcObject = stream;
-      video.autoplay = true;
-      video.playsInline = true;
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(s => {
+                    stream = s;
+                    video = document.createElement('video');
+                    video.srcObject = stream;
+                    video.autoplay = true;
+                    video.playsInline = true;
 
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-      video.addEventListener('loadedmetadata', () => {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+                    video.addEventListener('loadedmetadata', () => {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
 
-        const update = () => {
-          if (video.paused || video.ended) return;
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          try {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            let total = 0;
-            for (let i = 0; i < imageData.data.length; i += 4) {
-              const r = imageData.data[i];
-              const g = imageData.data[i + 1];
-              const b = imageData.data[i + 2];
-              total += 0.299 * r + 0.587 * g + 0.114 * b;
+                        //set timeout in modo di dare tempo alla telecamera di autoregolarsi
+                        setTimeout( () => {
+                            //funzione principale che calcola i valori di luminosità
+                            const update = () => {
+                            if (video.paused || video.ended) return;
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            try {
+                                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                                let total = 0;
+                                for (let i = 0; i < imageData.data.length; i += 4) {
+                                const r = imageData.data[i];
+                                const g = imageData.data[i + 1];
+                                const b = imageData.data[i + 2];
+                                total += 0.299 * r + 0.587 * g + 0.114 * b;
+                                }
+                                const avgBrightness = total / (imageData.data.length / 4);
+                                brightnessValues.value.push(avgBrightness);
+
+                                console.log('Luminosità media:', avgBrightness);
+                            } catch (error) {
+                                console.error('Errore getImageData:', error);
+                            }
+                            animationFrameId = requestAnimationFrame(update);
+                            };
+                            update();
+                        }, 4000) // time out di 3 secondi
+
+                    });
+
+                    video.addEventListener('error', (err) => {
+                        console.error('Errore video:', err);
+                    });
+                    })
+                    .catch(err => console.error('Errore accesso webcam:', err));
+                };
+
+            const stopRecording = () => {
+                //calcola la media totale di tutti i valori a fine della registrazione
+                const totalAverageBrightness = calculateAverage();
+                console.log("total average a fine registrazione: ", totalAverageBrightness);
+
+                //salva la media totale nel profilo utente
+                
+
+                // Ferma l'animazione
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+
+                // Ferma tutti i track del media stream
+                if (stream) {
+                    stream.getTracks().forEach((track) => track.stop());
+                    stream = null;
+                }
+
+                // Rimuovi l'elemento video dal DOM
+                if (video) {
+                    video.pause();
+                    video.srcObject = null;
+                    video.remove();
+                    video = null;
+                }
+
+                // Resetta i valori di brightnessValues
+                brightnessValues.value = [];
+
+                console.log('Registrazione interrotta.');
+            };
+
+            const calculateAverage = () => {
+                if(brightnessValues.value.length <= 10){
+                    console.log("not enough values have been registered");
+                    return 0;
+                }
+
+                const totalSum = brightnessValues.value.reduce((acc, value) => acc + value, 0);
+                const avg = totalSum / brightnessValues.value.length;
+                
+                return avg;
             }
-            const avgBrightness = total / (imageData.data.length / 4);
-            brightnessValues.value.push(avgBrightness);
-            console.log('Luminosità media:', avgBrightness);
-          } catch (error) {
-            console.error('Errore getImageData:', error);
-          }
-          animationFrameId = requestAnimationFrame(update);
-        };
-        update();
-      });
-
-      video.addEventListener('error', (err) => {
-        console.error('Errore video:', err);
-      });
-    })
-    .catch(err => console.error('Errore accesso webcam:', err));
-};
-
-const stopRecording = () => {
-  // Ferma l'animazione
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-
-  // Ferma tutti i track del media stream
-  if (stream) {
-    stream.getTracks().forEach((track) => track.stop());
-    stream = null;
-  }
-
-  // Rimuovi l'elemento video dal DOM
-  if (video) {
-    video.pause();
-    video.srcObject = null;
-    video.remove();
-    video = null;
-  }
-
-  // Resetta i valori di brightnessValues
-  brightnessValues.value = [];
-
-  console.log('Registrazione interrotta.');
-};
 
 
 

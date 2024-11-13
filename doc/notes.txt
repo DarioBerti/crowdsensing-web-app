@@ -60,6 +60,9 @@ PROGETTO
     preparo codice per fare la build [11/11, 12/11, ...]
     Ottimizzazione dei File: I file sono stati ottimizzati per la produzione (minificazione, suddivisione del codice, ecc.).
 
+    aggiungo funzione senza usare api esterne per calcolare la LUMINOSITA' usando la fotocamera del pc
+
+    aggiungo funzione che calcola average total brightness
     
 -------------------------------------------------------------------------------------------------------------------
 
