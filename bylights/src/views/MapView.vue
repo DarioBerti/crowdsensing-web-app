@@ -130,7 +130,7 @@
 
 <script>
     import 'leaflet/dist/leaflet.css'
-    import { Icon } from 'leaflet'
+    // import { Icon } from 'leaflet'
     import 'leaflet/dist/leaflet.css'
     import {onMounted, ref} from 'vue'
     import L from 'leaflet'
@@ -160,6 +160,9 @@
             const pathDate = ref(new Date().toISOString());
             const startTime = ref(null); // Memorizza il timestamp di inizio
             const recordingDuration = ref(0); // Durata della registrazione in secondi
+            const markerRef = ref(null);
+
+            
 
             const created = async() => {
                 axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
@@ -183,20 +186,34 @@
 
             }
 
-            const defaultIcon = new Icon({
-                iconUrl: require('leaflet/dist/images/marker-icon.png'),
-                shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+            const blueIcon = new L.Icon({
+              iconUrl: require('leaflet/dist/images/marker-icon.png'),
+              shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              shadowSize: [41, 41]
             });
+
+            const redIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                shadowSize: [41, 41]
+            });
+
+
+            // L.Marker.prototype.options.icon = defaultIcon;
             
-
-            L.Marker.prototype.options.icon = defaultIcon;
-
             const getLocation = async() => {
                 return new Promise((resolve, reject) => {
                     if(navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(position => {
                             lat.value = position.coords.latitude
                             lng.value = position.coords.longitude
+
+                            latitude.value = lat.value;
+                            longitude.value = lng.value;
 
                             resolve()
                         }, reject)
@@ -218,8 +235,10 @@
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     }).addTo(map.value);
 
-                    //aggiunta marker
-                    L.marker([lat.value, lng.value]).addTo(map.value);
+                    //aggiunta marker alla mappa
+                    // L.marker([lat.value, lng.value]).addTo(map.value);
+                    markerRef.value = L.marker([lat.value, lng.value], { icon: blueIcon }).addTo(map.value);
+
 
 
                     // Utilizza setTimeout per richiamare invalidateSize dopo che la mappa è stata caricata
@@ -237,6 +256,9 @@
              }
 
             const startRecording = () => {
+                //cambia colore del marker da blu a rosso
+                markerRef.value.setIcon(redIcon);
+
                 //inizia a calcolare il tempo
                 startTime.value = Date.now();
 
@@ -291,7 +313,12 @@
                     .catch(err => console.error('Errore accesso webcam:', err));
                 };
 
+
             const stopRecording = () => {
+                //ritorna a marker blu iniziale
+                //cambia colore del marker da blu a rosso
+                markerRef.value.setIcon(blueIcon);
+
                 // Ferma l'animazione
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
@@ -320,7 +347,7 @@
                     console.log("total average a fine registrazione: ", totalAverageBrightness.value);
     
                     //calcola langitudine e latitudine
-                    
+                    //già settati 
 
                     //calcola la date
                     pathDate.value = new Date().toISOString().slice(0, 10);
