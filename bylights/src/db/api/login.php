@@ -31,7 +31,6 @@
 
     //stabilisce connessione 'conn' usando db-config
     $conn = $dbh->db;
-    
 
     //QUERY CHE DOVREBBE ESSERE IN FUNCTIONS.PHP
     $query = "SELECT user_id, username, password FROM user WHERE email = ?";
@@ -53,7 +52,6 @@
         // Recupera i dati dell'utente
         $row = $result->fetch_assoc();
         $hashed_password = $row['password'];
-
 
         if (password_verify($password, $hashed_password)) {
             // Password corretta, imposta la sessione

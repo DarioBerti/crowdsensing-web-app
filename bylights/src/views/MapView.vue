@@ -361,11 +361,8 @@
                     }
 
                     //manda i dati del path per essere salvato nel profilo utente
-                    //totalAverageBrightness, recordedlat, recordedlng, longitude, date, recordingDuration
-
-
-
-
+                    //totalAverageBrightness, recordedlat, recordedlng, pathDate, recordingDuration
+                    insertPath();
 
                 }
 
@@ -394,12 +391,47 @@
                 return 1;
             }
 
+            const insertPath = async() => {
+                //variabili all'interno di pathData sono separate dal resto del codice
+                const pathData = {
+                    averageBrightness: totalAverageBrightness.value,
+                    initialLatitude: recordedLat.value,
+                    initialLongitude: recordedLng.value,
+                    pathDate: pathDate.value,
+                    pathTime: recordingDuration.value,
+                    userId: user.value.id
+                };
+
+                try {
+                    //richiesta a file endpoint php
+                    const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/insertPath.php`, pathData, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        withCredentials: true
+                    });
+                    
+                    if (response.data.success) {
+                        //inserimento path fatto con successo
+                        console.log("inserimento path avvenuto con successo");
+
+                        //AGGIUNGERE ELEMENTO GRAFICO PER CAPIRE CHE è STATO AGGIUNTO CON SUCCESSO
+                    } else {
+                        // inserimento path fallito
+                        console.log("errore nell'inserimento response.data:", response.data);
+                    }
+                } catch (error) {
+                    console.error("Errore durante la richiesta al backend: ", error);
+                }
+            }
+
             onMounted(() => {
                 created();
                 openMap();
             })
 
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration, insertPath}
         }
     }
 </script>
