@@ -2,22 +2,23 @@
     <!--contenitore parent che contiene elementi che si sovrappongono-->
     <div class = "mapLayout">
         <div ref="mapContainer" class="full-screen-map" ></div>
+
         <div class="record-icon">
-                <div v-if="changeFlag">
-                    <!--binding per svg-->
-                    <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording(); startRecording();">
-                </div>
-                <div v-else>
+            <div v-if="changeFlag">
+                <!--binding per svg-->
+                <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording(); startRecording();">
+            </div>
+            <div v-else>
                     <!--binding per svg-->
                     <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording(); stopRecording();">
                 </div>
         </div>
             <div v-if="changeFlag">
                 <div class="saved-paths">
-                    <!--routing link alla pagina di MapRecordingView-->
-                    <router-link to="/savedPathsViews" class="SavedPathsRoutingLink">
+                    <!-- Modifica il gestore dell'evento click -->
+                    <a @click="toggleSavedPaths" class="SavedPathsRoutingLink">
                         saved paths
-                    </router-link>
+                    </a>
                 </div>
             </div>
             <div v-else>
@@ -25,6 +26,11 @@
                     <p class="walkingText">walking...</p>
                 </div>
             </div>
+            
+            <!-- Overlay semi-trasparente -->
+            <div v-if="showSavedPaths" class="overlay" @click="toggleSavedPaths"></div>
+             
+            <SavedPathsView v-if="showSavedPaths" />
         </div>
 </template>
 
@@ -69,7 +75,7 @@
     }
     .saved-paths{
         position: absolute;
-        z-index: 1000;
+        z-index: 1500;
 
         top: 10px;
         left: 10px;
@@ -107,7 +113,56 @@
 
         animation: blink 1.2s ease-in-out infinite;
     }
+
+    .saved-paths-popup {
+        position: absolute;
+        top: 10%; /* Puoi regolare questa posizione */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2000; /* Deve essere superiore alla mappa */
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        max-height: 80vh;
+        overflow-y: auto;
+        width: 80%; /*larghezza per mobile */
+        background-color: rgba(255, 255, 255, 0.7);
+
+         /* Aggiungi gli stili per nascondere la scrollbar */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+
+    .saved-paths-popup::-webkit-scrollbar {
+      display: none; /* Safari e Chrome */
+    }
+
+    .mapLayout .full-screen-map {
+        pointer-events: auto;
+    }
+
+    .mapLayout .full-screen-map.popup-open {
+        pointer-events: none;
+    }
     
+    /* Overlay semi-trasparente */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Sfondo semi-trasparente */
+      z-index: 1500; /* Deve essere superiore alla mappa ma inferiore al popup */
+    }
+
+    /* Modifica l'interattività della mappa quando il popup è aperto */
+    .full-screen-map.popup-open {
+      pointer-events: none; /* Disabilita gli eventi sulla mappa */
+    }
+
+
+
     @keyframes blink {
         0% { opacity: 1; }
         50% { opacity: 0; }
@@ -126,6 +181,20 @@
             width: 25%
         }
     }
+
+    /* Schermi medi (tablet) */
+    @media screen and (min-width: 768px) {
+      .saved-paths-popup {
+        width: 60%;
+      }
+    }
+
+    /* Schermi grandi (desktop) */
+    @media screen and (min-width: 1024px) {
+      .saved-paths-popup {
+        width: 40%;
+      }
+    }
 </style>
 
 <script>
@@ -138,9 +207,13 @@
     import stopRecordIcon from '@/assets/stop-record-svg.svg'
     import axios from 'axios'
     import { useRouter } from 'vue-router'
+    import SavedPathsView from '@/views/SavedPathsView.vue';
 
     export default{
         name: 'MapView',
+        components: {
+            SavedPathsView,
+        },
 
         setup(){
             const lat = ref(0);
@@ -161,8 +234,13 @@
             const startTime = ref(null); // Memorizza il timestamp di inizio
             const recordingDuration = ref(0); // Durata della registrazione in secondi
             const markerRef = ref(null);
+            const showSavedPaths = ref(false);
 
             
+
+            const toggleSavedPaths = () => {
+                showSavedPaths.value = !showSavedPaths.value;
+            };
 
             const created = async() => {
                 axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
@@ -431,7 +509,8 @@
                 openMap();
             })
 
-            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration, insertPath}
+            return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration, insertPath, showSavedPaths,
+                toggleSavedPaths, SavedPathsView}
         }
     }
 </script>

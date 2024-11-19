@@ -1,14 +1,22 @@
 <template>
-  <div>
+  <div class="saved-paths-popup">
     <div v-if="error">
       <p>Error: {{ error }}</p>
     </div>
 
     <div v-else-if="error === false">
-      <h2>I tuoi percorsi salvati</h2>
       <div class="path-list">
         <div v-for="pathId in ListPathsId" :key="pathId" class="path-item">
-          <p>Path ID: {{ pathId }}</p>
+
+          <div class="name-path" style="text-align: left;">
+            <p>Path {{ pathId }}</p>
+          </div>
+
+          <div class="lamp-icon" style="text-align: right;">
+            <!--binding per svg-->
+            <img :src="streetLightIcon" alt="street light icon" class = "street-light">
+          </div>
+
         </div>
       </div>
     </div>
@@ -23,6 +31,7 @@
     import {onMounted, ref} from 'vue'
     import axios from 'axios'
     import { useRouter } from 'vue-router'
+    import streetLightIcon from '@/assets/street-light-icon.svg'
 
   export default {
     name: 'SavedPathsView',
@@ -65,32 +74,46 @@
       return {
         error,
         getData,
-        ListPathsId
+        ListPathsId,
+        streetLightIcon
       };
     }
   };
 </script>
 
+<style>
+  .path-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>
+
 <style scoped>
-.path-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .path-item {
+    width: 80%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #E9F7FF;
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Push text left, icon right */
+  }
 
-.path-item {
-  width: 80%;
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px solid #007BFF;
-  border-radius: 8px;
-  background-color: #E9F7FF;
-  text-align: center;
-}
+  .name-path{
+    flex-grow: 1;
+  }
 
-.path-item p {
-  margin: 0;
-  font-size: 18px;
-  color: #8d2ff2;
-}
+  .path-item p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .street-light{
+        height: 30px;
+        width: 30px;
+    }
 </style>
