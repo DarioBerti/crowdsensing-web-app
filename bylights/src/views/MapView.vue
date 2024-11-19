@@ -235,6 +235,9 @@
             const recordingDuration = ref(0); // Durata della registrazione in secondi
             const markerRef = ref(null);
             const showSavedPaths = ref(false);
+            let timeoutId = null;
+            const isRecording = ref(false);
+
 
             
 
@@ -324,10 +327,12 @@
             }
 
              const switchRecording = () => {
-                 changeFlag.value = !changeFlag.value
+                 changeFlag.value = !changeFlag.value;
              }
 
             const startRecording = () => {
+                isRecording.value = true;
+
                 //setta il marker nella nuova posizione in cui si è appena incominciato a registrare
                 getLocation();
                 recordedLat.value = lat.value;
@@ -339,8 +344,16 @@
                 //inizia a calcolare il tempo
                 startTime.value = Date.now();
 
+                //questa funzione è asincrona e restituisce una promise, quindi c'è il rischio di interrompere la registrazione prima che l'operazione asincrona sia finita
+                //  portando ad una finta fine registrazione
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(s => {
+                    if (!isRecording.value) {
+                      // Se la registrazione è stata interrotta prima che getUserMedia sia completato
+                      s.getTracks().forEach((track) => track.stop());
+                      return;
+                    }
+
                     stream = s;
                     video = document.createElement('video');
                     video.srcObject = stream;
@@ -351,14 +364,21 @@
                     const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
                     video.addEventListener('loadedmetadata', () => {
+                        if (!isRecording.value) {
+                          // Se la registrazione è stata interrotta prima che i metadati siano caricati
+                          return;
+                        }
+                        
                         canvas.width = video.videoWidth;
                         canvas.height = video.videoHeight;
 
                         //set timeout in modo di dare tempo alla telecamera di autoregolarsi
-                        setTimeout( () => {
+                        timeoutId = setTimeout( () => {
+                            if (!isRecording.value) return;
+
                             //funzione principale che calcola i valori di luminosità
                             const update = () => {
-                            if (!video || video.paused || video.ended) return;
+                            if (!isRecording.value || !video || video.paused || video.ended) return;
                             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                             try {
                                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -392,6 +412,8 @@
 
 
             const stopRecording = () => {
+                isRecording.value = false; // Indica che la registrazione è stata interrotta
+
                 //ritorna a marker blu iniziale
                 //cambia colore del marker da blu a rosso
                 markerRef.value.setIcon(blueIcon);
@@ -400,6 +422,12 @@
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                     animationFrameId = null;
+                }
+
+                // Cancella il timeout se è ancora pendente
+                if (timeoutId) {
+                  clearTimeout(timeoutId);
+                  timeoutId = null;
                 }
                 
                 // Ferma tutti i track del media stream

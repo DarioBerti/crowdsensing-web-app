@@ -63,6 +63,10 @@ PROGETTO
     aggiungo funzione senza usare api esterne per calcolare la LUMINOSITA' usando la fotocamera del pc
 
     aggiungo funzione che calcola average total brightness
+
+    aggiunta saved paths
+
+    fix bug particolare di doppio click veloce su registra, non stoppa veramente ma continua a registrare anche se è stato stoppato. RISOLTO
     
 -------------------------------------------------------------------------------------------------------------------
 
