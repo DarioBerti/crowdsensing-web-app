@@ -410,7 +410,6 @@
                     .catch(err => console.error('Errore accesso webcam:', err));
             };
 
-
             const stopRecording = () => {
                 isRecording.value = false; // Indica che la registrazione è stata interrotta
 

@@ -42,8 +42,9 @@
       const ListPathsId = ref([]);
 
 
-      //prende dal database i path registrati da tale utente loggato in sessione
-      const getData = async() => {
+      //prende dal database i path registrati da tale utente loggato in sessione.
+      //VIEW PATH
+      const getPathData = async() => {
         axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/SavedPaths.php`, {
             withCredentials: true})
         .then(response => {
@@ -68,12 +69,12 @@
       }
 
       onMounted(() => {
-        getData();
+        getPathData();
       })
 
       return {
         error,
-        getData,
+        getPathData,
         ListPathsId,
         streetLightIcon
       };

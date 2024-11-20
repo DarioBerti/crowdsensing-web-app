@@ -64,6 +64,29 @@
     }
 
     if (count($paths_id) > 0) {
+        //ora che la richiesta di vedere i path ha avuto successo, aggiorno la FK in nella tabella 'path': 'view_user_id'
+        //AGGIORNA IL CAMPO FK VIEW_USER_ID DI PATH, a meno che non sia già stato aggiornato
+        $query2 = "UPDATE path SET view_user_id = ? WHERE Rec_user_id = ? AND (view_user_id IS NULL OR view_user_id <> ?)";
+        $stmt2 = $conn->prepare($query2);
+        if ($stmt2 === false) {
+            echo json_encode([
+                "success" => false,
+                "message" => "Errore del server nella preparazione della query",
+                "error" => $conn->error
+            ]);
+            exit();
+        }
+        $stmt2->bind_param("iii", $user_id, $user, $user);
+        $checkResult = $stmt2->execute();
+        if ($checkResult === false) {
+            echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query", "error" => $stmt2->error]);
+            exit();
+        }
+        if(!$checkResult){
+            echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
+        }
+
+        //continua con la query precedente
         echo json_encode([
             "success" => true,
             "message" => "la richiesta ha avuto successo",
@@ -75,4 +98,5 @@
 
     // Chiudi lo statement e la connessione
     $stmt->close();
+    $stmt2->close();
     $conn->close();
