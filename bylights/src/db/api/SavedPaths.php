@@ -76,7 +76,7 @@
             ]);
             exit();
         }
-        $stmt2->bind_param("iii", $user_id, $user, $user);
+        $stmt2->bind_param("iii", $user_id, $user_id, $user_id);
         $checkResult = $stmt2->execute();
         if ($checkResult === false) {
             echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query", "error" => $stmt2->error]);
