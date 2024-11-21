@@ -6,15 +6,19 @@
 
     <div v-else-if="error === false">
       <div class="path-list">
-        <div v-for="pathId in ListPathsId" :key="pathId" class="path-item">
+        <div v-for="(path, index) in ListPaths" :key="path.path_id" class="path-item">
 
           <div class="name-path" style="text-align: left;">
-            <p>Path {{ pathId }}</p>
+            <p>Path {{ index + 1 }}</p>
           </div>
 
-          <div class="lamp-icon" style="text-align: right;">
-            <!--binding per svg-->
-            <img :src="streetLightIcon" alt="street light icon" class = "street-light">
+          <div class="icon-and-percentage">
+            <div class="lamp-icon">
+              <img :src="streetLightIcon" alt="street light icon" class="street-light">
+            </div>
+            <p :style="{ color: getColor(calculateBrightness(path.brightness)) }">
+              {{ calculateBrightness(path.brightness) }} %
+            </p>
           </div>
 
         </div>
@@ -39,12 +43,12 @@
     setup() {
       const error = ref(null);
       const router = useRouter();
-      const ListPathsId = ref([]);
+      const ListPaths = ref([]);
 
 
       //prende dal database i path registrati da tale utente loggato in sessione.
       //VIEW PATH
-      const getPathData = async() => {
+      const getPathsId = async() => {
         axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/SavedPaths.php`, {
             withCredentials: true})
         .then(response => {
@@ -53,7 +57,7 @@
           if (response.data.success) {
               // Salva la lista dei path
               error.value = false;
-              ListPathsId.value = response.data.paths_id;
+              ListPaths.value = response.data.paths;
             } else {
               error.value = true;
               console.log("Error message from server:", response.data.message);
@@ -68,15 +72,35 @@
         });
       }
 
+      const calculateBrightness = (brightness) => {
+        let maximumBrightness = 270;
+        return Math.floor((100 * brightness) / maximumBrightness);
+      }
+
+      // Funzione per determinare il colore in base alla percentuale
+      const getColor = (percentage) => {
+        if (percentage >= 0 && percentage < 30) {
+          return 'red';
+        } else if (percentage >= 30 && percentage < 60) {
+          return 'orange';
+        } else if (percentage >= 60 && percentage <= 100) {
+          return 'green';
+        } else {
+          return 'black'; // Colore di default
+        }
+      };
+
       onMounted(() => {
-        getPathData();
+        getPathsId();
       })
 
       return {
         error,
-        getPathData,
-        ListPathsId,
-        streetLightIcon
+        getPathsId,
+        ListPaths,
+        streetLightIcon,
+        calculateBrightness,
+        getColor
       };
     }
   };
@@ -100,6 +124,7 @@
     display: flex;
     align-items: center; /* Vertically center items */
     justify-content: space-between; /* Push text left, icon right */
+    /* flex-direction: column; */
   }
 
   .name-path{
@@ -116,5 +141,18 @@
   .street-light{
         height: 30px;
         width: 30px;
+    }
+
+    /* Stili per il contenitore dell'icona e della percentuale */
+    .icon-and-percentage {
+      display: flex;
+      align-items: center;
+      margin-top: 10px; /* Aggiunge spazio sopra */
+    }
+
+    /* Aggiunge spazio tra l'icona e il numero percentuale */
+    .lamp-icon {
+      margin-right: 4px;
+      margin-bottom: 4px;
     }
 </style>

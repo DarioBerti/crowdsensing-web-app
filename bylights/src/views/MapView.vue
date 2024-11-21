@@ -9,28 +9,32 @@
                 <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording(); startRecording();">
             </div>
             <div v-else>
-                    <!--binding per svg-->
-                    <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording(); stopRecording();">
-                </div>
+                <!--binding per svg-->
+                <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording(); stopRecording();">
+            </div>
         </div>
-            <div v-if="changeFlag">
-                <div class="saved-paths">
-                    <!-- Modifica il gestore dell'evento click -->
-                    <a @click="toggleSavedPaths" class="SavedPathsRoutingLink">
-                        saved paths
-                    </a>
-                </div>
+
+
+        <div v-if="changeFlag">
+            <div class="saved-paths">
+                <!-- Modifica il gestore dell'evento click -->
+                <a @click="toggleSavedPaths" class="SavedPathsRoutingLink">
+                    saved paths
+                </a>
             </div>
-            <div v-else>
-                <div class="saved-paths">
-                    <p class="walkingText">walking...</p>
-                </div>
+        </div>
+        <div v-else>
+            <div class="saved-paths">
+                <p class="walkingText">walking...</p>
             </div>
-            
-            <!-- Overlay semi-trasparente -->
-            <div v-if="showSavedPaths" class="overlay" @click="toggleSavedPaths"></div>
-             
-            <SavedPathsView v-if="showSavedPaths" />
+        </div>
+        
+        <!-- Overlay semi-trasparente -->
+        <div v-if="showSavedPaths" class="overlay" @click="toggleSavedPaths"></div>
+         
+        <SuccessPopup v-if="showSuccessPopup" @close="showSuccessPopup=false"/>
+
+        <SavedPathsView v-if="showSavedPaths" />
         </div>
 </template>
 
@@ -161,7 +165,12 @@
       pointer-events: none; /* Disabilita gli eventi sulla mappa */
     }
 
-
+    .success-message {
+      color: green;
+      font-size:30px;
+      margin-left: 10px;
+      z-index: 1500; /* Deve essere superiore alla mappa ma inferiore al popup */
+    }
 
     @keyframes blink {
         0% { opacity: 1; }
@@ -199,7 +208,6 @@
 
 <script>
     import 'leaflet/dist/leaflet.css'
-    // import { Icon } from 'leaflet'
     import 'leaflet/dist/leaflet.css'
     import {onMounted, ref} from 'vue'
     import L from 'leaflet'
@@ -208,11 +216,13 @@
     import axios from 'axios'
     import { useRouter } from 'vue-router'
     import SavedPathsView from '@/views/SavedPathsView.vue';
+    import SuccessPopup  from '@/views/SuccessPopup.vue'
 
     export default{
         name: 'MapView',
         components: {
             SavedPathsView,
+            SuccessPopup
         },
 
         setup(){
@@ -237,9 +247,7 @@
             const showSavedPaths = ref(false);
             let timeoutId = null;
             const isRecording = ref(false);
-
-
-            
+            const showSuccessPopup = ref(false);
 
             const toggleSavedPaths = () => {
                 showSavedPaths.value = !showSavedPaths.value;
@@ -411,6 +419,7 @@
             };
 
             const stopRecording = () => {
+                console.log(showSuccessPopup.value);
                 isRecording.value = false; // Indica che la registrazione è stata interrotta
 
                 //ritorna a marker blu iniziale
@@ -520,8 +529,9 @@
                     if (response.data.success) {
                         //inserimento path fatto con successo
                         console.log("inserimento path avvenuto con successo");
-
-                        //AGGIUNGERE ELEMENTO GRAFICO PER CAPIRE CHE è STATO AGGIUNTO CON SUCCESSO
+                        console.log(showSuccessPopup.value);
+                        showSuccessPopup.value = true;
+                        console.log(showSuccessPopup.value);
                     } else {
                         // inserimento path fallito
                         console.log("errore nell'inserimento response.data:", response.data);
@@ -537,7 +547,7 @@
             })
 
             return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration, insertPath, showSavedPaths,
-                toggleSavedPaths, SavedPathsView}
+                toggleSavedPaths, SavedPathsView, showSuccessPopup}
         }
     }
 </script>

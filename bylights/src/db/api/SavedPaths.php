@@ -31,7 +31,7 @@
 
     //QUERY CHE DOVREBBE ESSERE IN FUNCTIONS.PHP
     //ritorna vettore di tutti gli id dei path di tale user
-    $query = "SELECT path_id FROM path WHERE Rec_user_id = ?";
+    $query = "SELECT path_id, brightness, latitude, longitude, path_time, path_date FROM path WHERE Rec_user_id = ?";
 
     $stmt = $conn->prepare($query);
     if ($stmt === false) {
@@ -57,13 +57,21 @@
         exit();
     }
 
-    //salva tutti gli id dei path
-    $paths_id = [];
+    //salva tutti i valori dei path per ogni rispettivo path id
+    //STRUTTURA DATI IMPORTANTE
+    $paths = [];
     while($row = $result->fetch_assoc()){
-        $paths_id[] = $row['path_id'];
+        $paths[] = [
+            'path_id' => $row['path_id'],
+            'brightness' => $row['brightness'],
+            'latitude' => $row['latitude'],
+            'longitude' => $row['longitude'],
+            'path_time' => $row['path_time'],
+            'path_date' => $row['path_date'],
+        ];
     }
 
-    if (count($paths_id) > 0) {
+    if (count($paths) > 0) {
         //ora che la richiesta di vedere i path ha avuto successo, aggiorno la FK in nella tabella 'path': 'view_user_id'
         //AGGIORNA IL CAMPO FK VIEW_USER_ID DI PATH, a meno che non sia già stato aggiornato
         $query2 = "UPDATE path SET view_user_id = ? WHERE Rec_user_id = ? AND (view_user_id IS NULL OR view_user_id <> ?)";
@@ -90,7 +98,7 @@
         echo json_encode([
             "success" => true,
             "message" => "la richiesta ha avuto successo",
-            "paths_id" => $paths_id
+            "paths" => $paths
         ]);
     } else {
         echo json_encode(["success" => false, "message" => "la richiesta non ha ritornato nessun path"]);

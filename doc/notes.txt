@@ -67,6 +67,8 @@ PROGETTO
     aggiunta saved paths
 
     fix bug particolare di doppio click veloce su registra, non stoppa veramente ma continua a registrare anche se è stato stoppato. RISOLTO
+
+    aggiunta popup usando overlay e funzione di vue emit
     
 -------------------------------------------------------------------------------------------------------------------
 
