@@ -1,5 +1,4 @@
 <?php
-    //servono sempre
     header('Access-Control-Allow-Origin:  http://localhost:8080');
     header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
     header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
@@ -11,7 +10,6 @@
 
     
     //inizia sessione
-    // Includi il gestore delle sessioni
     //fa partire la session
     require_once __DIR__ . '/../../utils/session_manager.php';
 

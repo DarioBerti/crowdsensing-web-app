@@ -15,7 +15,7 @@
                 <label>Username:</label>
                 <input type="text" required v-model="username">
                 <label>Email:</label>
-                <!--metto @invalid.prevent=""/ per non mostrare graficamente il messaggio di errore in input sbagliato, ma comunque c'è la validazione-->
+                <!--mette @invalid.prevent=""/ per non mostrare graficamente il messaggio di errore in input sbagliato, ma comunque c'è la validazione-->
                 <input type="email" required v-model="email" @invalid.prevent=""/>
                 <label>Password</label>
                 <input type="password" required v-model="password">
@@ -190,8 +190,8 @@ export default{
 
     button:disabled{
         background: #ccc; /* Colore grigio per indicare che è disabilitato */
-        cursor: not-allowed; /* Mostra un'icona di divieto */
-        opacity: 0.6; /* Rende il bottone più trasparente */
+        cursor: not-allowed;
+        opacity: 0.6;
     }
     
     .back {
@@ -243,7 +243,4 @@ export default{
     .back:hover span{
         transform: translate3d(-200%, 0, 0);
     }
-    
-
-
 </style>

@@ -2,19 +2,19 @@
 function sec_session_start() {
     if (session_status() == PHP_SESSION_NONE) {
         $session_name = 'sec_session_id';
-        $secure = false; // Not using HTTPS
-        $httponly = true; // Prevent JavaScript access to session ID
+        $secure = false; // non usa https
+        $httponly = true; // previene accesso javascript ad ID
 
-        // Ensure session uses only cookies
+        //sessione usa solo cookies
         if (ini_set('session.use_only_cookies', 1) === false) {
             header("Location: error.php?err=Could not initiate a safe session (ini_set)");
             exit();
         }
 
-        // Get current cookie parameters
+        // get sessione corrente params
         $cookieParams = session_get_cookie_params();
 
-        // Set new cookie parameters
+        // Set nuovi params della sessione
         session_set_cookie_params(
             $cookieParams["lifetime"],
             $cookieParams["path"],
@@ -23,7 +23,7 @@ function sec_session_start() {
             $httponly
         );
 
-        // Set session name and start the session
+        // Set nome sessione e incomincia nuova sessione
         session_name($session_name);
         session_start();
         session_regenerate_id(true);

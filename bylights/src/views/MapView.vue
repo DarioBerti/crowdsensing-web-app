@@ -40,11 +40,6 @@
 
 <style scoped>
     .full-screen-map {
-        /*width: 100vw; 
-        height: 100vh; 
-        position: fixed; 
-        top: 0;
-        left: 0;*/
         height: 100%;   /*utilizza intera altezza di contenitore parent */
     }
 
@@ -57,7 +52,7 @@
         position: absolute; /*interrompe flusso del documento e viene messo in sovrapposizione in base anche al z-index */
         bottom: 10px; /* Posiziona 10px sopra il fondo del contenitore */
         left: 50%; /* Posiziona a metà del contenitore sull'asse orizzontale */
-        transform: translateX(-50%); /* Sposta a sinistra di metà della sua larghezza per centrarlo */
+        transform: translateX(-50%);
         z-index: 1000;  /*così elemento appare al di sopra degli altri elementi del contenitore */
         text-align: center;
     }
@@ -67,7 +62,7 @@
     }
     .stop-record-icon{
         position: absolute; /*interrompe flusso del documento e viene messo in sovrapposizione in base anche al z-index */
-        bottom: 10px; /* Posiziona 10px sopra il fondo del contenitore */
+        bottom: 10px;
         left: 50%; /* Posiziona a metà del contenitore sull'asse orizzontale */
         transform: translateX(-50%); /* Sposta a sinistra di metà della sua larghezza per centrarlo */
         z-index: 1000;  /*così elemento appare al di sopra degli altri elementi del contenitore */
@@ -85,15 +80,15 @@
         left: 10px;
     }
     .SavedPathsRoutingLink {
-        background-color: white;  /* Colore di sfondo */
-        border-radius: 10px;     /* Angoli arrotondati */
-        padding: 10px;           /* Padding intorno al testo */
-        text-align: center;      /* Allineamento del testo */
+        background-color: white; 
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
         
-        /* Altre proprietà per abbellire il link */
-        color: black;            /* Colore del testo */
-        display: inline-block;   /* Renderlo un blocco ma con comportamento in linea */
-        cursor: pointer;         /* Cambiare il cursore per indicare che è cliccabile */
+        /*estetica link */
+        color: black;
+        display: inline-block;
+        cursor: pointer;
 
         font-family: Avenir, Helvetica, Arial, sans-serif;
         font-weight: bold;
@@ -104,14 +99,11 @@
     }
     .walkingText {
         margin: 0;
-        background-color: white;  /* Colore di sfondo */
-        border-radius: 10px;     /* Angoli arrotondati */
-        padding: 10px;           /* Padding intorno al testo */
-        text-align: center;      /* Allineamento del testo */
-        
-        /* Altre proprietà per abbellire il link */
-        color: green;            /* Colore del testo */
-
+        background-color: white;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        color: green;
         font-family: Avenir, Helvetica, Arial, sans-serif;
         font-weight: bold;
 
@@ -120,25 +112,25 @@
 
     .saved-paths-popup {
         position: absolute;
-        top: 10%; /* Puoi regolare questa posizione */
+        top: 10%;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 2000; /* Deve essere superiore alla mappa */
+        z-index: 2000; /*superiore all'index della mappa */
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         border-radius: 10px;
         max-height: 80vh;
         overflow-y: auto;
-        width: 80%; /*larghezza per mobile */
+        width: 80%; /*larghezza per schermi mobile */
         background-color: rgba(255, 255, 255, 0.7);
 
-         /* Aggiungi gli stili per nascondere la scrollbar */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* Internet Explorer 10+ */
+        /*nasconde la scroll bar */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     .saved-paths-popup::-webkit-scrollbar {
-      display: none; /* Safari e Chrome */
+      display: none;
     }
 
     .mapLayout .full-screen-map {
@@ -157,19 +149,19 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5); /* Sfondo semi-trasparente */
-      z-index: 1500; /* Deve essere superiore alla mappa ma inferiore al popup */
+      z-index: 1500; /* superiore alla mappa ma inferiore al popup */
     }
 
-    /* Modifica l'interattività della mappa quando il popup è aperto */
+    /* gestisce quando popup è aperta sulla mappa*/
     .full-screen-map.popup-open {
-      pointer-events: none; /* Disabilita gli eventi sulla mappa */
+      pointer-events: none;
     }
 
     .success-message {
       color: green;
       font-size:30px;
       margin-left: 10px;
-      z-index: 1500; /* Deve essere superiore alla mappa ma inferiore al popup */
+      z-index: 1500; /* Superiore alla mappa ma inferiore al popup */
     }
 
     @keyframes blink {
@@ -191,14 +183,14 @@
         }
     }
 
-    /* Schermi medi (tablet) */
+    /* Schermi medi*/
     @media screen and (min-width: 768px) {
       .saved-paths-popup {
         width: 60%;
       }
     }
 
-    /* Schermi grandi (desktop) */
+    /* Schermi grandi*/
     @media screen and (min-width: 1024px) {
       .saved-paths-popup {
         width: 40%;
@@ -407,7 +399,7 @@
                             animationFrameId = requestAnimationFrame(update);
                             };
                             update();
-                        }, 4000) // time out di 3 secondi
+                        }, 4000) // time out di 3 secondi per calibrazione
 
                     });
 
@@ -419,7 +411,6 @@
             };
 
             const stopRecording = () => {
-                console.log(showSuccessPopup.value);
                 isRecording.value = false; // Indica che la registrazione è stata interrotta
 
                 //ritorna a marker blu iniziale
@@ -529,9 +520,7 @@
                     if (response.data.success) {
                         //inserimento path fatto con successo
                         console.log("inserimento path avvenuto con successo");
-                        console.log(showSuccessPopup.value);
                         showSuccessPopup.value = true;
-                        console.log(showSuccessPopup.value);
                     } else {
                         // inserimento path fallito
                         console.log("errore nell'inserimento response.data:", response.data);

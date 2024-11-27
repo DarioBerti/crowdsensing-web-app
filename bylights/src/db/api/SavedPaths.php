@@ -58,7 +58,6 @@
     }
 
     //salva tutti i valori dei path per ogni rispettivo path id
-    //STRUTTURA DATI IMPORTANTE
     $paths = [];
     while($row = $result->fetch_assoc()){
         $paths[] = [

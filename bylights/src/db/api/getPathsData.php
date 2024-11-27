@@ -1,5 +1,4 @@
 <?php
-    //servono sempre
     header('Access-Control-Allow-Origin:  http://localhost:8080');
     header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
     header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
@@ -26,7 +25,6 @@
 
     $user_id = $_SESSION['user_id'];
 
-    //stabilisce connessione 'conn' usando db-config
     $conn = $dbh->db;
 
     $query = "SELECT brightness, latitude, longitude, path_time, path_date FROM path WHERE view_user_id = ?";
@@ -59,3 +57,7 @@
     while($row = $result->fetch_assoc()){
         $paths_id[] = $row['path_id'];
     }
+
+    // Chiudi lo statement e la connessione
+    $stmt->close();
+    $conn->close();

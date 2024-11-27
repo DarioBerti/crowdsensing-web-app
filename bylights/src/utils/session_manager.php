@@ -3,8 +3,8 @@
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
-        'domain' => 'localhost', // Modifica con il tuo dominio
-        'secure' => false, // Imposta su true se usi HTTPS
+        'domain' => 'localhost',
+        'secure' => false,
         'httponly' => true,
         'samesite' => 'Strict'
     ]);

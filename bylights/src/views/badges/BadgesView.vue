@@ -15,7 +15,7 @@ import { onMounted } from 'vue'
 export default{
     name: 'BadgesView',
     setup(){
-        //salvo in const tutti i dati dalla funzione GetBadges()
+        //salva in const tutti i dati dalla funzione GetBadges()
         const {badges, error, fetchBadges} = GetBadges()
 
         onMounted(fetchBadges)

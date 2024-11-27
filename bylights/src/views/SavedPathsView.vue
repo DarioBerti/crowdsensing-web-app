@@ -47,7 +47,6 @@
 
 
       //prende dal database i path registrati da tale utente loggato in sessione.
-      //VIEW PATH
       const getPathsId = async() => {
         axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/SavedPaths.php`, {
             withCredentials: true})
@@ -77,7 +76,7 @@
         return Math.floor((100 * brightness) / maximumBrightness);
       }
 
-      // Funzione per determinare il colore in base alla percentuale
+      // determina il colore in base alla percentuale
       const getColor = (percentage) => {
         if (percentage >= 0 && percentage < 30) {
           return 'red';
@@ -122,9 +121,8 @@
     border-radius: 8px;
     background-color: #E9F7FF;
     display: flex;
-    align-items: center; /* Vertically center items */
-    justify-content: space-between; /* Push text left, icon right */
-    /* flex-direction: column; */
+    align-items: center;
+    justify-content: space-between;
   }
 
   .name-path{
@@ -143,14 +141,13 @@
         width: 30px;
     }
 
-    /* Stili per il contenitore dell'icona e della percentuale */
+    /*icona e percentuale */
     .icon-and-percentage {
       display: flex;
       align-items: center;
-      margin-top: 10px; /* Aggiunge spazio sopra */
+      margin-top: 10px;
     }
 
-    /* Aggiunge spazio tra l'icona e il numero percentuale */
     .lamp-icon {
       margin-right: 4px;
       margin-bottom: 4px;

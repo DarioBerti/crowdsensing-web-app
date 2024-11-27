@@ -99,4 +99,3 @@ backend php, prima di ogni richiesta http
     header("Content-Type: application/json");
 -------------------------------------------------------------------------------------------------------------------
 DOMANDE:
-ho cambiato gli import, le routes e la history per build senza warning. COME FACCIO AD ASSICURARMI CHE SIA CORRETTA?

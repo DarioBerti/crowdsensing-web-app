@@ -13,7 +13,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios'; // Assicurati di aver importato Axios
+import axios from 'axios';
 
 export default {
   name: 'BadgesDetailsView',
@@ -46,5 +46,4 @@ export default {
 </script>
 
 <style scoped>
-/* Aggiungi i tuoi stili qui */
 </style>
