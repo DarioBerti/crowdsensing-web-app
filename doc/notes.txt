@@ -69,6 +69,8 @@ PROGETTO
     fix bug particolare di doppio click veloce su registra, non stoppa veramente ma continua a registrare anche se è stato stoppato. RISOLTO
 
     aggiunta popup usando overlay e funzione di vue emit
+
+    PER LA BUILD HO CAMBIATO IL FILE .HTACCESS
     
 -------------------------------------------------------------------------------------------------------------------
 

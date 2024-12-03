@@ -5,8 +5,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
   
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/tirocinio/crowdsensing-web-app/bylights/' // Path di produzione
-    : '/' ,// Path di sviluppo
+    ? '/myapp/' // Path di production
+    : '/' ,// Path di development
   
     configureWebpack: {
     plugins: [

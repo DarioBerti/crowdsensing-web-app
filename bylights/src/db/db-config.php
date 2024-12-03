@@ -6,7 +6,7 @@
     $dbname = 'bylights';
     $user = 'root';
     $password = '';
-    $port = 3308; // Porta del MySQL in XAMPP
+    $port = 3306; // Porta del MySQL in XAMPP
 
     require_once __DIR__ .  '/database.php';
     require_once __DIR__  . '/../utils/functions.php';
