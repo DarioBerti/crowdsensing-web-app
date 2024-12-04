@@ -48,7 +48,7 @@
 
       //prende dal database i path registrati da tale utente loggato in sessione.
       const getPathsId = async() => {
-        axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/SavedPaths.php`, {
+        axios.get(`http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/SavedPaths.php`, {
             withCredentials: true})
         .then(response => {
           console.log("Response data:", response.data);

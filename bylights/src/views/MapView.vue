@@ -246,7 +246,7 @@
             };
 
             const created = async() => {
-                axios.get(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/user.php`, {
+                axios.get(`http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/user.php`, {
                     withCredentials: true})
                 .then(response => {
                     if (response.data.loggedIn) {
@@ -509,7 +509,7 @@
 
                 try {
                     //richiesta a file endpoint php
-                    const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/src/db/api/insertPath.php`, pathData, {
+                    const response = await axios.post(`http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/insertPath.php`, pathData, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'

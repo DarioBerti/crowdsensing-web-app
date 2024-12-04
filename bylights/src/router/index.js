@@ -43,7 +43,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory('/tirocinio/crowdsensing-web-app/bylights/'),
+    history: createWebHistory(process.env.BASE_URL),
     routes
 })
 
