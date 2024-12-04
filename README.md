@@ -1,7 +1,9 @@
 # crowdsensing-web-app
 Design e sviluppo di una web app per il crowdsensing della luminosità di una città
 
-README: Configurazione e Avvio dell'Applicazione
+
+
+## Configurazione e Avvio dell'Applicazione
 
 ### Requisiti
 - XAMPP installato.
