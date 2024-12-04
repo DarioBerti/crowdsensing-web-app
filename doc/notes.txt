@@ -70,7 +70,9 @@ PROGETTO
 
     aggiunta popup usando overlay e funzione di vue emit
 
-    PER LA BUILD HO CAMBIATO IL FILE .HTACCESS
+    PER LA BUILD HO CAMBIATO IL FILE .HTACCESS E LE ROUTES
+    NESSUNA ROUTES DEVE ESSERE HARDCODED
+    PERA' NEL BACKEND DEVO METTERE NESSUN BASEURL, DATO CHE DIST è SOLO IL FRONTEND E COMUNICA CON IL BACKEND, LE RICHIESTE AXIOS DEVONO ESSERE STATICHE
     
 -------------------------------------------------------------------------------------------------------------------
 
