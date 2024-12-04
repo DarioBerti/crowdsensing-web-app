@@ -21,6 +21,7 @@ README: Configurazione e Avvio dell'Applicazione
 
 3. Configurazione del File .htaccess
    - Rimpiazza il file .htaccess nella cartella myapp con il seguente contenuto:
+   ```
      <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /myapp/
@@ -29,6 +30,7 @@ README: Configurazione e Avvio dell'Applicazione
   	RewriteCond %{REQUEST_FILENAME} !-d
   	RewriteRule . /myapp/index.html [L]
      </IfModule>
+   ```
 
 
 ### L'app è configurata! per eseguirla:
