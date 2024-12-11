@@ -1,8 +1,8 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /tirocinio/crowdsensing-web-app/bylights/
+  RewriteBase /myapp/
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /tirocinio/crowdsensing-web-app/bylights/index.html [L]
+  RewriteRule . /myapp/index.html [L]
 </IfModule>
