@@ -15,7 +15,7 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
    - Esegui XAMPP come amministratore.
    - Avvia il modulo Apache e attendi che sia attivo, poi avvia il modulo MySQL.
    - Clicca su Admin accanto a MySQL per accedere a phpMyAdmin.
-   - Crea il database utilizzando lo script .sql fornito nella cartella principale: **bylights.sql**.
+   - vai su "Database" e crea database con nome "bylights", poi importa file **bylights.sql**.
 
 2. Configurazione della Cartella di produzione frontend
    - Crea cartella "tirocinio" dentro htdocs ed all'interno clona tutta la cartella "crowdsensing-web-app"
@@ -28,7 +28,8 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
    - All'interno di 'myapp' incolla il **CONTENUTO** della cartella 'dist' dell'applicazione.
 
 ### L'app è configurata! per eseguirla:
-1. Apri il browser e accedi a http://localhost/myapp.
+1. Apri il browser e accedi a http://localhost:80/myapp
+2. esiste già un profilo di email: dario@berti e password: dario1
 
 <br />
 <br />
