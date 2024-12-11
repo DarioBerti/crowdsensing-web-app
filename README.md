@@ -53,8 +53,8 @@ Configurazione del File .htaccess
 <br />
 <br />
 
-### Se riscontri problemi, assicurati di:
-- dentro XAMPP, il file di Apache httpd.config deve non commentato la riga "LoadModule rewrite_module modules/mod_rewrite.so"
+### In caso di errori:
+- Dentro XAMPP, il file di Apache httpd.config la riga "LoadModule rewrite_module modules/mod_rewrite.so" non deve essere commentata
   ed inoltre deve avere abilitato AllowOverride così:
 ```
   <Directory "C:/xampp/cgi-bin">
@@ -63,3 +63,4 @@ Configurazione del File .htaccess
     Require all granted
 </Directory>
 ```
+- Svuotare la cache del browser
