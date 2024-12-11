@@ -18,7 +18,12 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
    - Crea il database utilizzando lo script .sql fornito nella cartella principale: **bylights.sql**.
 
 2. Configurazione della Cartella di produzione frontend
-   - Crea cartella "tirocinio" dentro htdocs ed all'interno clona tutto il progetto
+   - Crea cartella "tirocinio" dentro htdocs ed all'interno clona tutta la cartella "crowdsensing-web-app"
+   - esegui command prompt come amministratore, naviga fino alla cartella del progetto "bylights" e esegui i comandi
+     ```
+     	npm install -g @vue/cli
+     	npm install
+     ```
    - Crea cartella vuota 'myapp' in xampp/htdocs
    - All'interno di 'myapp' incolla il contenuto della cartella 'dist' dell'applicazione.
 
