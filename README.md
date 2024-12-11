@@ -34,7 +34,7 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
 <br />
 <br />
 
-### NEL CASO IN CUI VOLESSI RIFARE LA BUILD:
+### SE SI VUOLE RIFARE LA BUILD DEL PROGETTO:
 Configurazione del File .htaccess
    - Rimpiazza il file .htaccess nella cartella myapp con il seguente contenuto:
    ```
