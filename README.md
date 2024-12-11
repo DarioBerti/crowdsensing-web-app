@@ -50,9 +50,10 @@ Configurazione del File .htaccess
 
 
 
+<br />
+<br />
 
-
-Se riscontri problemi, assicurati di:
+### Se riscontri problemi, assicurati di:
 - dentro XAMPP, il file di Apache httpd.config deve non commentato la riga "LoadModule rewrite_module modules/mod_rewrite.so"
   ed inoltre deve avere abilitato AllowOverride così:
 ```
