@@ -18,10 +18,11 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
    - Crea il database utilizzando lo script .sql fornito nella cartella principale: **bylights.sql**.
 
 2. Configurazione della Cartella di produzione frontend
-   - Crea cartella vuota 'myapp' in xampp/htdocs	
+   - Crea cartella "tirocinio" dentro htdocs ed all'interno clona tutto il progetto
+   - Crea cartella vuota 'myapp' in xampp/htdocs
    - All'interno di 'myapp' incolla il contenuto della cartella 'dist' dell'applicazione.
 
-3. Configurazione del File .htaccess
+4. Configurazione del File .htaccess
    - Rimpiazza il file .htaccess nella cartella myapp con il seguente contenuto:
    ```
      <IfModule mod_rewrite.c>
