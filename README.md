@@ -25,8 +25,14 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
      	npm install
      ```
    - Crea cartella vuota 'myapp' in xampp/htdocs
-   - All'interno di 'myapp' incolla il contenuto della cartella 'dist' dell'applicazione.
+   - All'interno di 'myapp' incolla il **CONTENUTO** della cartella 'dist' dell'applicazione.
 
+### L'app è configurata! per eseguirla:
+1. Apri il browser e accedi a http://localhost/myapp.
+
+
+
+## NEL CASO IN CUI VOLESSI RIFARE LA BUILD:
 4. Configurazione del File .htaccess
    - Rimpiazza il file .htaccess nella cartella myapp con il seguente contenuto:
    ```
@@ -41,8 +47,7 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
    ```
 
 
-### L'app è configurata! per eseguirla:
-1. Apri il browser e accedi a http://localhost/myapp.
+
 
 
 Se riscontri problemi, verifica che Apache, MySQL e i file di configurazione siano attivi e corretti.
