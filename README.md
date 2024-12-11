@@ -52,4 +52,13 @@ Configurazione del File .htaccess
 
 
 
-Se riscontri problemi, verifica che Apache, MySQL e i file di configurazione siano attivi e corretti.
+Se riscontri problemi, assicurati di:
+- dentro XAMPP, il file di Apache httpd.config deve non commentato la riga "LoadModule rewrite_module modules/mod_rewrite.so"
+  ed inoltre deve avere abilitato AllowOverride così:
+```
+  <Directory "C:/xampp/cgi-bin">
+    AllowOverride All
+    Options None
+    Require all granted
+</Directory>
+```
