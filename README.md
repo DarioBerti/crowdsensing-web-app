@@ -30,9 +30,10 @@ Design e sviluppo di una web app per il crowdsensing della luminosità di una ci
 ### L'app è configurata! per eseguirla:
 1. Apri il browser e accedi a http://localhost/myapp.
 
+<br />
+<br />
 
-
-## NEL CASO IN CUI VOLESSI RIFARE LA BUILD:
+### NEL CASO IN CUI VOLESSI RIFARE LA BUILD:
 4. Configurazione del File .htaccess
    - Rimpiazza il file .htaccess nella cartella myapp con il seguente contenuto:
    ```
