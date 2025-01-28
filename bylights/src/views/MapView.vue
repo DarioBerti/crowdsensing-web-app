@@ -34,6 +34,8 @@
          
         <SuccessPopup v-if="showSuccessPopup" @close="showSuccessPopup=false"/>
 
+        <FailurePopup v-if="showFailurePopup" @close="showFailurePopup=false"/>
+
         <SavedPathsView v-if="showSavedPaths" />
         </div>
 </template>
@@ -209,12 +211,14 @@
     import { useRouter } from 'vue-router'
     import SavedPathsView from '@/views/SavedPathsView.vue';
     import SuccessPopup  from '@/views/SuccessPopup.vue'
+    import FailurePopup from '@/views/FailurePopup.vue'
 
     export default{
         name: 'MapView',
         components: {
             SavedPathsView,
-            SuccessPopup
+            SuccessPopup,
+            FailurePopup
         },
 
         setup(){
@@ -240,6 +244,7 @@
             let timeoutId = null;
             const isRecording = ref(false);
             const showSuccessPopup = ref(false);
+            const showFailurePopup = ref(false);
 
             const toggleSavedPaths = () => {
                 showSavedPaths.value = !showSavedPaths.value;
@@ -491,6 +496,7 @@
             const checkEnoughValues = () => {
                 if(brightnessValues.value.length <= 50){
                     console.log("not enough values have been registered, walk for a little bit longer :)");
+                    showFailurePopup.value = true;
                     return 0;
                 }
                 return 1;
@@ -536,7 +542,7 @@
             })
 
             return{lat, lng, getLocation, map, mapContainer, openMap, recordIcon, changeFlag, switchRecording, stopRecordIcon, created, user, startRecording, stopRecording, totalAverageBrightness, checkEnoughValues, recordedLat, recordedLng, pathDate, calculateAverage, startTime, recordingDuration, insertPath, showSavedPaths,
-                toggleSavedPaths, SavedPathsView, showSuccessPopup}
+                toggleSavedPaths, SavedPathsView, showSuccessPopup, showFailurePopup}
         }
     }
 </script>
