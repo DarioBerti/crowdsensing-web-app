@@ -312,7 +312,7 @@
                     await getLocation();
 
                     //set del map.value
-                    map.value = L.map(mapContainer.value, {zoomControl: false}).setView([lat.value, lng.value], 16);
+                    map.value = L.map(mapContainer.value, {zoomControl: false}).setView([lat.value, lng.value], 15);
                     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         maxZoom: 19,
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
