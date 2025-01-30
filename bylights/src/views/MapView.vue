@@ -397,7 +397,7 @@
                                 const avgBrightness = total / (imageData.data.length / 4);
                                 brightnessValues.value.push(avgBrightness);
 
-                                console.log('Luminosità media:', avgBrightness);
+                                console.log('Luminosità media per punto:', avgBrightness);
                             } catch (error) {
                                 console.error('Errore getImageData:', error);
                             }

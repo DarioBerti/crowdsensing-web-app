@@ -7,6 +7,7 @@ const Badges = () => import('@/views/badges/BadgesView.vue')
 const MapView = () => import('@/views/MapView.vue')
 const SavedPathsView = () => import('@/views/SavedPathsView.vue')
 const BadgesDetails = () => import('@/views/badges/BadgesDetailsView.vue')
+const PathDetailsView = () => import('@/views/PathDetailsView.vue')
 
 
 const routes = [
@@ -39,6 +40,12 @@ const routes = [
         path: '/badges/:id',
         name: 'BadgesDetails',
         component: BadgesDetails
+    },
+    {
+        path: '/pathDetails/:path_id',
+        name: 'PathDetailsView',
+        component: PathDetailsView,
+        props: true
     }
 ]
 

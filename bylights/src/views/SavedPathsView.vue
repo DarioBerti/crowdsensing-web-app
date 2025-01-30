@@ -6,7 +6,8 @@
 
     <div v-else-if="error === false">
       <div class="path-list">
-        <div v-for="(path, index) in ListPaths" :key="path.path_id" class="path-item">
+
+        <div v-for="(path, index) in ListPaths" :key="path.path_id" class="path-item" @click="goToPathDetailsPage(path.path_id)">
 
           <div class="name-path" style="text-align: left;">
             <p>Path {{ index + 1 }}</p>
@@ -89,6 +90,10 @@
         }
       };
 
+      const goToPathDetailsPage = (path_id) => {
+        router.push({ path: `/pathDetails/${path_id}` });
+      }
+
       onMounted(() => {
         getPathsId();
       })
@@ -99,7 +104,8 @@
         ListPaths,
         streetLightIcon,
         calculateBrightness,
-        getColor
+        getColor,
+        goToPathDetailsPage
       };
     }
   };
