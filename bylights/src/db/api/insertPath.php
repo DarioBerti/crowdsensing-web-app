@@ -14,7 +14,7 @@
     require_once __DIR__ . '/../db-config.php';
 
     // Verifica input preso da axios post
-    if (is_null($input) || !isset($input['averageBrightness']) || !isset($input['initialLatitude']) || !isset($input['initialLongitude']) || !isset($input['pathDate']) || !isset($input['pathTime']) || !isset($input['userId'])) {
+    if (is_null($input) || !isset($input['averageBrightness']) || !isset($input['initialLatitude']) || !isset($input['initialLongitude']) || !isset($input['pathDate']) || !isset($input['pathTime']) || !isset($input['userId']) || !isset($input['recordedPoints'])) {
         echo json_encode(["success" => false, "message" => "Dati di input axios non validi"]);
         exit();
     }
@@ -25,13 +25,14 @@
     $pathDate = $input['pathDate'];
     $pathTime = $input['pathTime'];
     $userId = $input['userId'];
+    $recordedPoints = json_encode($input['recordedPoints']);
 
     //stabilisce connessione 'conn' usando db-config
     $conn = $dbh->db;
 
     //QUERY CHE DOVREBBE ESSERE IN FUNCTIONS.PHP
     //path id autoincrementa. viewuserid, deladminid, anaadminid sono nullable
-    $query = "INSERT INTO path (brightness, Rec_user_id, latitude, longitude, path_time, path_date) VALUES (?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO path (brightness, Rec_user_id, latitude, longitude, path_time, path_date, recordedPoints) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($query);
     if ($stmt === false) {
@@ -43,7 +44,7 @@
         exit();
     }
     
-    $stmt->bind_param("diddss", $averageBrightness, $userId, $initialLatitude, $initialLongitude, $pathTime, $pathDate);
+    $stmt->bind_param("diddsss", $averageBrightness, $userId, $initialLatitude, $initialLongitude, $pathTime, $pathDate, $recordedPoints);
     if ($stmt->execute() === false) {
         echo json_encode(["success" => false, "message" => "Errore del server nell'esecuzione della query"]);
         exit();

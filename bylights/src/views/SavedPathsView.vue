@@ -79,11 +79,11 @@
 
       // determina il colore in base alla percentuale
       const getColor = (percentage) => {
-        if (percentage >= 0 && percentage < 30) {
+        if (percentage >= 0 && percentage < 35) {
           return 'red';
-        } else if (percentage >= 30 && percentage < 60) {
+        } else if (percentage >= 35 && percentage < 45) {
           return 'orange';
-        } else if (percentage >= 60 && percentage <= 100) {
+        } else if (percentage >= 45 && percentage <= 100) {
           return 'green';
         } else {
           return 'black'; // Colore di default

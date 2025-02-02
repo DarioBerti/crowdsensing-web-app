@@ -230,7 +230,7 @@
             const user = ref({});
             const changeFlag = ref(true);
             const brightnessValues = ref([]);
-            let animationFrameId = null;
+            //let animationFrameId = null;
             let stream = null;
             let video = null;
             let totalAverageBrightness = ref(0);
@@ -241,10 +241,12 @@
             const recordingDuration = ref(0); // Durata della registrazione in secondi
             const markerRef = ref(null);
             const showSavedPaths = ref(false);
-            let timeoutId = null;
+            //let timeoutId = null;
             const isRecording = ref(false);
             const showSuccessPopup = ref(false);
             const showFailurePopup = ref(false);
+            let listPoints = ref([]);
+            let intervalId = null;
 
             const toggleSavedPaths = () => {
                 showSavedPaths.value = !showSavedPaths.value;
@@ -338,6 +340,9 @@
             const startRecording = () => {
                 isRecording.value = true;
 
+                //azzera array di oggetti per ogni punto
+                listPoints.value = [];
+
                 //setta il marker nella nuova posizione in cui si è appena incominciato a registrare
                 getLocation();
                 recordedLat.value = lat.value;
@@ -377,34 +382,46 @@
                         canvas.width = video.videoWidth;
                         canvas.height = video.videoHeight;
 
-                        //set timeout in modo di dare tempo alla telecamera di autoregolarsi
-                        timeoutId = setTimeout( () => {
-                            if (!isRecording.value) return;
+                        // Delay iniziale per la calibrazione della telecamera
+                           setTimeout(() => {
+                               if (!isRecording.value) return;
 
-                            //funzione principale che calcola i valori di luminosità
-                            const update = () => {
-                            if (!isRecording.value || !video || video.paused || video.ended) return;
-                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            try {
-                                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                                let total = 0;
-                                for (let i = 0; i < imageData.data.length; i += 4) {
-                                const r = imageData.data[i];
-                                const g = imageData.data[i + 1];
-                                const b = imageData.data[i + 2];
-                                total += 0.299 * r + 0.587 * g + 0.114 * b;
-                                }
-                                const avgBrightness = total / (imageData.data.length / 4);
-                                brightnessValues.value.push(avgBrightness);
+                               const update = () => {
+                                   if (!isRecording.value || !video || video.paused || video.ended) return;
+                                   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                   try {
+                                       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                                       let total = 0;
+                                       for (let i = 0; i < imageData.data.length; i += 4) {
+                                           const r = imageData.data[i];
+                                           const g = imageData.data[i + 1];
+                                           const b = imageData.data[i + 2];
+                                           total += 0.299 * r + 0.587 * g + 0.114 * b;
+                                       }
+                                       const avgBrightness = total / (imageData.data.length / 4);
+                                       brightnessValues.value.push(avgBrightness);
+                                       console.log('Luminosità media per punto:', avgBrightness);
 
-                                console.log('Luminosità media per punto:', avgBrightness);
-                            } catch (error) {
-                                console.error('Errore getImageData:', error);
-                            }
-                            animationFrameId = requestAnimationFrame(update);
-                            };
-                            update();
-                        }, 4000) // time out di 3 secondi per calibrazione
+                                       //calcolo di lat e lng per ogni punto in cui viene calcolata la luminosità
+                                       getLocation()
+                                       const lat_current = lat.value;
+                                       const lng_current = lng.value;
+                                    
+                                       //aggiunta di lat,long e brightness per ogni punto in array di oggetti
+                                       listPoints.value.push({ lat: lat_current, lng: lng_current, brightness: avgBrightness });
+
+                                       console.log("vet obj: ", listPoints.value)
+
+                                   } catch (error) {
+                                       console.error('Errore getImageData:', error);
+                                   }
+                               };
+
+                               // Esegue la funzione update ogni 5000 ms
+                               intervalId = setInterval(() => {
+                                   if (isRecording.value) update();
+                               }, 5000);
+                           }, 4000);
 
                     });
 
@@ -422,16 +439,10 @@
                 //cambia colore del marker da blu a rosso
                 markerRef.value.setIcon(blueIcon);
 
-                // Ferma l'animazione
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                    animationFrameId = null;
-                }
-
-                // Cancella il timeout se è ancora pendente
-                if (timeoutId) {
-                  clearTimeout(timeoutId);
-                  timeoutId = null;
+                // Ferma l'intervallo di aggiornamento
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
                 }
                 
                 // Ferma tutti i track del media stream
@@ -494,7 +505,7 @@
             }
 
             const checkEnoughValues = () => {
-                if(brightnessValues.value.length <= 50){
+                if(brightnessValues.value.length <= 7){
                     console.log("not enough values have been registered, walk for a little bit longer :)");
                     showFailurePopup.value = true;
                     return 0;
@@ -510,7 +521,8 @@
                     initialLongitude: recordedLng.value,
                     pathDate: pathDate.value,
                     pathTime: recordingDuration.value,
-                    userId: user.value.id
+                    userId: user.value.id,
+                    recordedPoints: listPoints.value
                 };
 
                 try {
