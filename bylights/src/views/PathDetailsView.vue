@@ -32,8 +32,6 @@ export default {
     props: ['path_id'],
     name: 'SimpleMap',
     setup(props) {
-        const start_lat = ref(0);
-        const start_lng = ref(0);
         const map = ref();
         const router = useRouter();
         const mapContainer = ref();
@@ -44,30 +42,33 @@ export default {
         
 
         const getPathPoints = async() => {
-            axios.get(`http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/getPathPoints.php`, {
-                params: {path_id: pathId.value},
-                withCredentials: true})
-            .then(response => {
-            console.log("Response data:", response.data);
+            try {
+                const response = await axios.get(
+                'http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/getPathPoints.php',
+                {
+                    params: { path_id: pathId.value },
+                    withCredentials: true
+                }
+                );
 
-            if (response.data.success) {
+                console.log("Response data:", response.data);
+
+                if (response.data.success) {
                 // Salva l'array di oggetti già convertito da json
                 listPoints.value = response.data.recordedPoints;
                 error.value = false;
 
-                loopListPoints()
                 } else {
                 error.value = true;
                 console.log("Error message from server:", response.data.message);
                 router.push('/mapView');
-            }
-            })
-            .catch(() => {
+                }
+            } catch(err) {
                 // Errore, reindirizza alla mappa
                 error.value = true;
                 console.log("errore catch");
                 router.push('/mapView');
-            });
+            }
             }
 
         const goBack = () => {
@@ -102,41 +103,31 @@ export default {
             });
         }
 
-        const setStartingLocation = async() => {
-            start_lat.value =  44.144201
-            start_lng.value =  12.250434
-        }
 
         const openMap = async () => {
             try {
-                await setStartingLocation();
+                // Prima recuperi i punti
+                await getPathPoints();
 
-                map.value = L.map(mapContainer.value,  {zoomControl: false}).setView([start_lat.value, start_lng.value], 16);
+                // 2) Scegli la posizione di partenza
+                let startLat = 44.144201;   // fallback
+                let startLng = 12.250434;   // fallback
+
+                if (listPoints.value.length > 0) {
+                // Prendo il primo punto di listPoints
+                    startLat = listPoints.value[0].lat;
+                    startLng = listPoints.value[0].lng;
+                    console.log("primo punto: ", startLat)
+                }
+
+                map.value = L.map(mapContainer.value,  {zoomControl: false}).setView([startLat, startLng], 16);
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map.value);
 
-
-                //INIZIALIZZA LISTA DI PUNTI PER PROVA
-                // listPoints.value.push({ lat: 44.143333, lng: 12.249722, brightness: 150 });
-                // listPoints.value.push({ lat: 44.143550, lng: 12.249900, brightness: 150 });
-                // listPoints.value.push({ lat: 44.143767, lng: 12.250078, brightness: 100 });
-                // listPoints.value.push({ lat: 44.143984, lng: 12.250256, brightness:  100});
-                // listPoints.value.push({ lat: 44.144201, lng: 12.250434, brightness:  100});
-                // listPoints.value.push({ lat: 44.144418, lng: 12.250612, brightness:  80});
-                // listPoints.value.push({ lat: 44.144635, lng: 12.250790, brightness:  80});
-                // listPoints.value.push({ lat: 44.144852, lng: 12.250968, brightness:  100});
-                // listPoints.value.push({ lat: 44.145069, lng: 12.251146, brightness:  100});
-                // listPoints.value.push({ lat: 44.145286, lng: 12.251324, brightness: 150 });
-                // listPoints.value.push({ lat: 44.145503, lng: 12.251502, brightness:  150});
-
-
-                //loopListPoints()
+                loopListPoints()
                 
-                //chiama funzione per predenre informazioni dei 'recordedPoints'
-                getPathPoints()
-
             } catch (error) {
                 console.error('Failed to get location:', error);
             }
