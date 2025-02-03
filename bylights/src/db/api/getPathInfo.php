@@ -30,7 +30,7 @@
     $path_id = isset($_GET['path_id']) ? intval($_GET['path_id']) : 0;
 
     if ($path_id > 0){
-        $query = "SELECT recordedPoints FROM path WHERE path_id = ?";
+        $query = "SELECT brightness,latitude,longitude,path_time,path_date,recordedPoints FROM path WHERE path_id = ?";
 
         $stmt = $conn->prepare($query);
         if ($stmt === false) {
@@ -58,7 +58,14 @@
 
         // Controlla se ci sono righe nel risultato
         if ($row = $result->fetch_assoc()) {
-            echo json_encode(["success" => true, "recordedPoints" => json_decode($row['recordedPoints'])]);
+            echo json_encode(["success" => true,
+                "brightness" => $row['brightness'],
+                "latitude" => $row['latitude'],
+                "longitude" => $row['longitude'],
+                "path_time" => $row['path_time'],
+                "path_date" => $row['path_date'],
+                "recordedPoints" => json_decode($row['recordedPoints'])
+            ]);
         } else {
             echo json_encode(["success" => false, "message" => "Nessun dato trovato per il path_id fornito"]);
         }
@@ -68,5 +75,4 @@
         echo json_encode(["success" => false, "message" => "Invalid path_id"]);
     }
 
-    // 
     $conn->close();

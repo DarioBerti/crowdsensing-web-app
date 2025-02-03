@@ -7,9 +7,17 @@
         </div>
 
         <div class="content">
-            <p></p>
+            <div class="path-info">
+                <p class="path-date">{{ pathInfo?.path_date }}</p>
+                <p class="avg-brightness-name">Average brightness:</p>
+                <p class="avg-brightness" :style="{ color: getColor(calculateBrightness(pathInfo?.brightness)) }">
+                    {{ calculateBrightness(pathInfo?.brightness) }} %
+                </p>
+            </div>
+            <div class="time-info">
+                <p class="path-time">Walking Time: <span style="font-style: italic;">{{ pathInfo.path_time }} minuti</span> </p>
+            </div>
         </div>
-
 
         <div class="map-container">
             <div ref="mapContainer" class="map-box"></div>
@@ -38,6 +46,25 @@ export default {
         const listPoints = ref([]);
         const error = ref(null);
         const pathId = ref(props.path_id); 
+        const pathInfo = ref({});
+
+        // determina il colore in base alla percentuale
+        const getColor = (percentage) => {
+            if (percentage >= 0 && percentage < 35) {
+            return 'red';
+            } else if (percentage >= 35 && percentage < 45) {
+            return 'orange';
+            } else if (percentage >= 45 && percentage <= 100) {
+            return 'green';
+            } else {
+            return 'black'; // Colore di default
+            }
+        };
+
+        const calculateBrightness = (brightness) => {
+            let maximumBrightness = 270;
+            return Math.floor((100 * brightness) / maximumBrightness);
+        }
 
         const drawColoredPath = () => {
             // Controlla che ci siano almeno 2 punti
@@ -67,21 +94,25 @@ export default {
 
         
 
-        const getPathPoints = async() => {
+        const getPathInfo = async() => {
             try {
                 const response = await axios.get(
-                'http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/getPathPoints.php',
+                'http://localhost/tirocinio/crowdsensing-web-app/bylights/src/db/api/getPathInfo.php',
                 {
                     params: { path_id: pathId.value },
                     withCredentials: true
                 }
                 );
 
-                console.log("Response data:", response.data);
-
                 if (response.data.success) {
                 // Salva l'array di oggetti già convertito da json
                 listPoints.value = response.data.recordedPoints;
+                //salva tutto quello che ritorna
+                pathInfo.value = response.data
+                console.log("Response data:", response.data);
+                console.log("pathinfo data:", pathInfo.value);
+                console.log("eccoooo:", pathInfo.value.path_time);
+
                 error.value = false;
 
                 } else {
@@ -133,28 +164,26 @@ export default {
         const openMap = async () => {
             try {
                 // Prima recuperi i punti
-                await getPathPoints();
+                await getPathInfo();
 
-                // 2) Scegli la posizione di partenza
-                let startLat = 44.144201;   // fallback
-                let startLng = 12.250434;   // fallback
-
-                if (listPoints.value.length > 0) {
-                // Prende il primo punto di listPoints
-                    let length = listPoints.value.length;
-                    //calcola punto a metà dell'array dei punti per settare view in modo centrale
-                    let half = Math.round(length/2);
-                    console.log("metà: ",half)
-                    startLat = listPoints.value[half].lat;
-                    startLng = listPoints.value[half].lng;
-                    console.log("primo punto: ", startLat);
+                if (listPoints.value.length === 0) {
+                    console.warn("Nessun punto registrato, impossibile centrare la mappa.");
+                    return;
                 }
 
-                map.value = L.map(mapContainer.value,  {zoomControl: false, zoomSnap: 0}).setView([startLat, startLng], 16.5);
+                // Crea la mappa
+                map.value = L.map(mapContainer.value, { zoomControl: false, zoomSnap: 0 });
+
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map.value);
+
+                // Crea i bounds per adattare la vista
+                const bounds = L.latLngBounds(listPoints.value.map(p => [p.lat, p.lng]));
+
+                // Imposta la vista per contenere tutto il percorso
+                map.value.fitBounds(bounds, { padding: [50, 50] });
 
                 loopListPoints()
 
@@ -168,12 +197,84 @@ export default {
 
         onMounted(openMap);
 
-        return { mapContainer, goBack, backIcon, getPathPoints, drawColoredPath };
+        return { mapContainer, goBack, backIcon, getPathInfo, drawColoredPath, pathInfo, getColor, calculateBrightness };
     }
 };
 </script>
 
 <style scoped>
+
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 1px;
+}
+
+.path-time{
+    flex-grow: 1;
+    font-weight: bold;
+    font-style: italic;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .path-info {
+        font-size: 0.9rem; /* Riduce il font su schermi piccoli */
+    }
+
+    .path-time,
+    .path-date,
+    .avg-brightness-name,
+    .avg-brightness {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .path-info {
+        font-size: 0.8rem; /* Ulteriore riduzione su schermi molto piccoli */
+    }
+
+    .path-time
+    .path-date,
+    .avg-brightness-name,
+    .avg-brightness {
+        font-size: 0.8rem;
+    }
+}
+
+
+.avg-brightness{
+    font-weight: bold;
+}
+
+.avg-brightness-name{
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.path-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.path-date {
+    flex-grow: 1;
+    font-style: italic; 
+    color: #2e2b2b;         /* un grigio medio che non sovrasta il resto */
+    font-size: 0.9rem;   /* leggermente più piccola */
+    letter-spacing: 0.5px; /* spaziatura delicata fra le lettere */
+    opacity: 0.9;        /* un velo di trasparenza per un effetto più soft */
+    font-weight: bolder;
+    font-size: larger;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
 .header {
     display: flex;
@@ -181,7 +282,7 @@ export default {
     justify-content: center;
     gap: 10px;
     padding: 15px;
-    font-weight: bold;
+    font-weight: bolder;
     font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -218,13 +319,27 @@ export default {
 
     .map-box {
         width: 100%;
-        height: min(100vw, 400px); 
+        height: min(100vw, 400px); /* Altezza massima di 400px su schermi grandi */
         border: 3px solid #ccc;
         border-radius: 10px;
-
     }
+
+    /* Schermi più piccoli */
+    @media (max-width: 768px) {
+        .map-box {
+            height: 70vh; /* Occupa % dell'altezza dello schermo */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .map-box {
+            height: 75vh; /* Occupa % dell'altezza dello schermo per dispositivi molto piccoli */
+        }
+    }
+
     .content {
-        padding: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
         font-size: 18px;
         font-weight: 500;
         text-align: left;
