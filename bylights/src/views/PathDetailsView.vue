@@ -7,7 +7,7 @@
         </div>
 
         <div class="content">
-            <p>informazioni sul percorso prese dal database.</p>
+            <p></p>
         </div>
 
 
@@ -38,6 +38,32 @@ export default {
         const listPoints = ref([]);
         const error = ref(null);
         const pathId = ref(props.path_id); 
+
+        const drawColoredPath = () => {
+            // Controlla che ci siano almeno 2 punti
+            if (listPoints.value.length < 2) return;
+
+            // Ciclo sui punti a coppie [p1, p2]
+            for (let i = 0; i < listPoints.value.length - 1; i++) {
+                const p1 = listPoints.value[i];
+                const p2 = listPoints.value[i + 1];
+
+                // Scegli il colore in base alla brightness di p1 (o media di p1 e p2)
+                let colorSegment = 'green';
+                if (p1.brightness < 90) {
+                colorSegment = 'red';
+                } else if (p1.brightness < 120) {
+                colorSegment = 'orange';
+                }
+
+                // Crea polyline tra p1 e p2
+                L.polyline([[p1.lat, p1.lng], [p2.lat, p2.lng]], {
+                color: colorSegment,
+                weight: 6,      // spessore linea
+                opacity: 0.7,   // trasparenza generale
+                }).addTo(map.value);
+            }
+            };
 
         
 
@@ -90,7 +116,7 @@ export default {
                 color: color.value,
                 fillColor: color.value,
                 fillOpacity: 0.5,
-                radius: 8
+                radius: 6
             }).addTo(map.value);
         }
 
@@ -114,19 +140,26 @@ export default {
                 let startLng = 12.250434;   // fallback
 
                 if (listPoints.value.length > 0) {
-                // Prendo il primo punto di listPoints
-                    startLat = listPoints.value[0].lat;
-                    startLng = listPoints.value[0].lng;
-                    console.log("primo punto: ", startLat)
+                // Prende il primo punto di listPoints
+                    let length = listPoints.value.length;
+                    //calcola punto a metà dell'array dei punti per settare view in modo centrale
+                    let half = Math.round(length/2);
+                    console.log("metà: ",half)
+                    startLat = listPoints.value[half].lat;
+                    startLng = listPoints.value[half].lng;
+                    console.log("primo punto: ", startLat);
                 }
 
-                map.value = L.map(mapContainer.value,  {zoomControl: false}).setView([startLat, startLng], 16);
+                map.value = L.map(mapContainer.value,  {zoomControl: false, zoomSnap: 0}).setView([startLat, startLng], 16.5);
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map.value);
 
                 loopListPoints()
+
+                // Aggiunge la polyline colorata
+                drawColoredPath();
                 
             } catch (error) {
                 console.error('Failed to get location:', error);
@@ -135,7 +168,7 @@ export default {
 
         onMounted(openMap);
 
-        return { mapContainer, goBack, backIcon, getPathPoints };
+        return { mapContainer, goBack, backIcon, getPathPoints, drawColoredPath };
     }
 };
 </script>

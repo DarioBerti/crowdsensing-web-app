@@ -7,10 +7,10 @@
     <div v-else-if="error === false">
       <div class="path-list">
 
-        <div v-for="(path, index) in ListPaths" :key="path.path_id" class="path-item" @click="goToPathDetailsPage(path.path_id)">
+        <div v-for="(path) in ListPaths" :key="path.path_id" class="path-item" @click="goToPathDetailsPage(path.path_id)">
 
           <div class="name-path" style="text-align: left;">
-            <p>Path {{ index + 1 }}</p>
+            <p>{{ path.path_date }}</p>
           </div>
 
           <div class="icon-and-percentage">
@@ -45,7 +45,6 @@
       const error = ref(null);
       const router = useRouter();
       const ListPaths = ref([]);
-
 
       //prende dal database i path registrati da tale utente loggato in sessione.
       const getPathsId = async() => {
@@ -120,6 +119,16 @@
 </style>
 
 <style scoped>
+  .name-path {
+    flex-grow: 1;
+    font-style: italic; 
+    color: #666;         /* un grigio medio che non sovrasta il resto */
+    font-size: 0.9rem;   /* leggermente più piccola */
+    letter-spacing: 0.5px; /* spaziatura delicata fra le lettere */
+    opacity: 0.9;        /* un velo di trasparenza per un effetto più soft */
+  }
+
+
   .path-item {
     width: 80%;
     padding: 15px;
@@ -129,10 +138,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .name-path{
-    flex-grow: 1;
   }
 
   .path-item p {
