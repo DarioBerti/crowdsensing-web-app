@@ -1,85 +1,93 @@
 <template>
     <!--contenitore parent che contiene elementi che si sovrappongono-->
-    <div class = "mapLayout">
-        <div ref="mapContainer" class="full-screen-map" ></div>
+    <div class = "mapPageLayout">
 
-        <div class="record-icon">
-            <div v-if="changeFlag">
-                <!--binding per svg-->
-                <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording(); startRecording();">
-            </div>
-            <div v-else>
-                <!--binding per svg-->
-                <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording(); stopRecording();">
-            </div>
+        <!--sezione della mappa-->
+        <div class="map-container">
+            <div ref="mapContainer" class="map-box" ></div>
         </div>
 
-
-        <div v-if="changeFlag">
+        <!--sezione bottoni-->
+        <div class="buttons-container">
+            <div class="record-icon">
+                <div v-if="changeFlag">
+                    <img :src="recordIcon" alt="record icon" class = "record-style" @click="switchRecording(); startRecording();">
+                </div>
+                <div v-else>
+                    <img :src="stopRecordIcon" alt="stop record icon" class = "stop-record-style" @click="switchRecording(); stopRecording();">
+                </div>
+            </div>
+            
             <div class="saved-paths">
-                <!-- Modifica il gestore dell'evento click -->
-                <a @click="toggleSavedPaths" class="SavedPathsRoutingLink">
-                    saved paths
-                </a>
+                <div v-if="changeFlag">
+                    <a @click="toggleSavedPaths" class="SavedPathsRoutingLink">
+                        saved paths
+                    </a>
+                </div>
+                <div v-else>
+                    <div class="saved-paths">
+                        <p class="walkingText">walking...</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div v-else>
-            <div class="saved-paths">
-                <p class="walkingText">walking...</p>
-            </div>
-        </div>
-        
-        <!-- Overlay semi-trasparente -->
+
+        <!-- Overlay e popup -->
         <div v-if="showSavedPaths" class="overlay" @click="toggleSavedPaths"></div>
-         
         <SuccessPopup v-if="showSuccessPopup" @close="showSuccessPopup=false"/>
-
         <FailurePopup v-if="showFailurePopup" @close="showFailurePopup=false"/>
-
         <SavedPathsView v-if="showSavedPaths" />
         </div>
 </template>
 
 <style scoped>
-    .full-screen-map {
-        height: 100%;   /*utilizza intera altezza di contenitore parent */
-    }
-
-    .mapLayout{
-        position: relative; /*posizione relativa per container parent */
+    .mapPageLayout {
         height: 100vh;
-        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
     }
-    .record-icon{
-        position: absolute; /*interrompe flusso del documento e viene messo in sovrapposizione in base anche al z-index */
-        bottom: 10px; /* Posiziona 10px sopra il fondo del contenitore */
-        left: 50%; /* Posiziona a metà del contenitore sull'asse orizzontale */
-        transform: translateX(-50%);
-        z-index: 1000;  /*così elemento appare al di sopra degli altri elementi del contenitore */
+    /*contenitore della mappa */
+    .map-container{
+        width: 100%;
+    }
+    /*scatola della mappa */
+    .map-box {
+        width: 100%;
+        /* height: min(100vw, 450px); */
+        border: 3px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 20px; /* lascia spazio per i bottoni sottostanti */
+        /*  */
+    }
+    /* Contenitore dei bottoni*/
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 300px; /* Adjust this value based on your design preferences */
+        margin: 0 auto;
+       
+    }
+    .record-icon, .saved-paths {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .saved-paths{
         text-align: center;
     }
     .record-style{
         height: 10%;
         width: 10%;
-    }
-    .stop-record-icon{
-        position: absolute; /*interrompe flusso del documento e viene messo in sovrapposizione in base anche al z-index */
-        bottom: 10px;
-        left: 50%; /* Posiziona a metà del contenitore sull'asse orizzontale */
-        transform: translateX(-50%); /* Sposta a sinistra di metà della sua larghezza per centrarlo */
-        z-index: 1000;  /*così elemento appare al di sopra degli altri elementi del contenitore */
-        text-align: center;
+        cursor: pointer;
     }
     .stop-record-style{
         height: 10%;
         width: 10%;
-    }
-    .saved-paths{
-        position: absolute;
-        z-index: 1500;
-
-        top: 10px;
-        left: 10px;
+        cursor: pointer;
     }
     .SavedPathsRoutingLink {
         background-color: white; 
@@ -87,7 +95,6 @@
         padding: 10px;
         text-align: center;
         
-        /*estetica link */
         color: black;
         display: inline-block;
         cursor: pointer;
@@ -95,9 +102,11 @@
         font-family: Avenir, Helvetica, Arial, sans-serif;
         font-weight: bold;
         text-decoration: none;
+        white-space: nowrap;
     }
+
     .SavedPathsRoutingLink:hover{
-        background-color: #eee;
+        background-color: #ccc;
     }
     .walkingText {
         margin: 0;
@@ -134,14 +143,6 @@
     .saved-paths-popup::-webkit-scrollbar {
       display: none;
     }
-
-    .mapLayout .full-screen-map {
-        pointer-events: auto;
-    }
-
-    .mapLayout .full-screen-map.popup-open {
-        pointer-events: none;
-    }
     
     /* Overlay semi-trasparente */
     .overlay {
@@ -152,11 +153,6 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5); /* Sfondo semi-trasparente */
       z-index: 1500; /* superiore alla mappa ma inferiore al popup */
-    }
-
-    /* gestisce quando popup è aperta sulla mappa*/
-    .full-screen-map.popup-open {
-      pointer-events: none;
     }
 
     .success-message {
@@ -172,23 +168,32 @@
         100% { opacity: 1; }
     }
 
-    @media (max-width: 600px) {
-        .record-style{
+    /*schermi grandi */
+    @media (min-width: 601px) {
+        .record-style, .stop-record-style{
             height: 25%;
-            width: 25%
+            width: 25%;
+        }
+        .map-box{
+            height: 460px;
         }
     }
-    @media (max-width: 600px) {
-        .stop-record-style{
-            height: 25%;
-            width: 25%
+    /*schermi piccoli mobile */
+    @media (max-width: 600px){
+        .record-style, .stop-record-style{
+            height: 20%;
+            width: 20%;
+        }
+        .map-box {
+            height: 540px;
         }
     }
 
-    /* Schermi medi*/
-    @media screen and (min-width: 768px) {
+    /* Schermi medi e piccoli*/
+    @media screen and (min-width: 0px) and (max-width: 1023px) {
       .saved-paths-popup {
-        width: 60%;
+        width: 80%;
+        height: 70%;
       }
     }
 
