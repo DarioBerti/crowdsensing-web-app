@@ -42,7 +42,7 @@
 
 <style scoped>
     .mapPageLayout {
-        height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
