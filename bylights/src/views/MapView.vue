@@ -170,9 +170,13 @@
 
     /*schermi grandi */
     @media (min-width: 601px) {
-        .record-style, .stop-record-style{
+        .record-style{
             height: 25%;
             width: 25%;
+        }
+        .stop-record-style{
+            height: 20%;
+            width: 20%;
         }
         .map-box{
             height: 460px;
@@ -180,9 +184,13 @@
     }
     /*schermi piccoli mobile */
     @media (max-width: 600px){
-        .record-style, .stop-record-style{
+        .record-style{
             height: 20%;
             width: 20%;
+        }
+        .stop-record-style{
+            height: 18%;
+            width: 18%;
         }
         .map-box {
             height: 540px;
